@@ -74,6 +74,13 @@ class UntisWindow(Adw.ApplicationWindow):
             "notify::visible-child-name", lambda *args: self.updateOfflineBanners()
         )
 
+        def renameWindow(*args):
+            child = self.main_view_stack.get_visible_child()
+            page = self.main_view_stack.get_page(child)
+            title = page.get_title()
+            self.set_title(title)
+        self.main_view_stack.connect("notify::visible-child-name", renameWindow)
+
         GLib.idle_add(self.addExternalPages)
         GLib.idle_add(self.showHideViews)
         GLib.idle_add(self.updateOfflineBanners)
