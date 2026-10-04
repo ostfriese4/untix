@@ -79,6 +79,7 @@ class UntisWindow(Adw.ApplicationWindow):
             page = self.main_view_stack.get_page(child)
             title = page.get_title()
             self.set_title(title)
+        renameWindow()
         self.main_view_stack.connect("notify::visible-child-name", renameWindow)
 
         GLib.idle_add(self.addExternalPages)
