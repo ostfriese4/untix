@@ -26,12 +26,13 @@ from .messages import MessagesPage
 from .absences import AbsencesPage
 from .create_homework import HomeworkEditWindow
 from .credentials import getCredentials
-from .api import testCredentials
+from .api import testCredentials, id as appId
 from .profiles import ProfilesWindow
 from .external_page import ExternalPage
 from gi.repository import Adw
 from gi.repository import Gtk
 from gi.repository import GLib
+from gi.repository import Gio
 
 
 @Gtk.Template(resource_path="/page/codeberg/ostfriese4/Untis/window.ui")
@@ -74,6 +75,11 @@ class UntisWindow(Adw.ApplicationWindow):
             "notify::visible-child-name", lambda *args: self.updateOfflineBanners()
         )
 
+        self.settings = Gio.Settings(schema_id=appId)
+        self.settings.connect(
+            "changed::hide-unsupported-features", lambda *args: self.showHideViews()
+        )
+
         def renameWindow(*args):
             child = self.main_view_stack.get_visible_child()
             page = self.main_view_stack.get_page(child)
@@ -108,6 +114,8 @@ class UntisWindow(Adw.ApplicationWindow):
             banner.update(offline, last)
 
     def hidePage(self, name):
+        if not self.settings.get_boolean("hide-unsupported-features"):
+            return self.showPage(name)
         if not name in self.hiddenPages:
             page = self.main_view_stack.get_child_by_name(name)
             self.main_view_stack.remove(page)

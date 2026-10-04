@@ -13,5 +13,9 @@
 			<default>false</default>
 			<summary>Ignore breaks between exams</summary>
 		</key>
+		<key name="hide-unsupported-features" type="b">
+			<default>true</default>
+			<summary>Hide unsupported features</summary>
+		</key>
 	</schema>
 </schemalist>
