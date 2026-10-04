@@ -1,5 +1,6 @@
 [Desktop Entry]
-Name=Timetable
+Name=Untix
+GenericName=Timetable
 Exec=untix %u
 Icon=page.codeberg.ostfriese4.Untis
 Terminal=false

@@ -4,10 +4,10 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
 
-  <name>Timetable</name>
+  <name>Untix</name>
   <summary>View your WebUntis timetable</summary>
   <description>
-    <p>Timetable is an unofficial client for WebUntis, which focusses on the features used by students.</p>
+    <p>Untix is an unofficial client for WebUntis, which focusses on the features used by students.</p>
     <p>While it might also work for teachers, this isn't tested and many features may be missing.</p>
     <p>Supported features are:</p>
     <ul>
@@ -25,9 +25,9 @@
     <name>Ostfriese4</name>
   </developer>
 
-  <url type="homepage">https://codeberg.org/ostfriese4/untis</url>
-  <url type="vcs-browser">https://codeberg.org/ostfriese4/untis</url>
-  <url type="bugtracker">https://codeberg.org/ostfriese4/untis/issues</url>
+  <url type="homepage">https://codeberg.org/ostfriese4/untix</url>
+  <url type="vcs-browser">https://codeberg.org/ostfriese4/untix</url>
+  <url type="bugtracker">https://codeberg.org/ostfriese4/untix/issues</url>
 
   <recommends>
     <display_length compare="ge">360</display_length>
@@ -39,7 +39,7 @@
     <control>touch</control>
   </supports>
 
-  <translation type="gettext">untis</translation>
+  <translation type="gettext">untix</translation>
   <!-- All graphical applications having a desktop file must have this tag in the MetaInfo.
      If this is present, appstreamcli compose will pull icons, keywords and categories from the desktop file. -->
   <launchable type="desktop-id">page.codeberg.ostfriese4.Untis.desktop</launchable>
@@ -54,20 +54,36 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://codeberg.org/ostfriese4/untis/raw/branch/main/screenshots/timetable.png</image>
+      <image>https://codeberg.org/ostfriese4/untix/raw/branch/main/screenshots/timetable.png</image>
       <caption>The timetable</caption>
     </screenshot>
     <screenshot>
-      <image>https://codeberg.org/ostfriese4/untis/raw/branch/main/screenshots/information.png</image>
+      <image>https://codeberg.org/ostfriese4/untix/raw/branch/main/screenshots/information.png</image>
       <caption>Dialog showing information about a lesson</caption>
     </screenshot>
     <screenshot>
-      <image>https://codeberg.org/ostfriese4/untis/raw/branch/main/screenshots/homework_edit.png</image>
+      <image>https://codeberg.org/ostfriese4/untix/raw/branch/main/screenshots/homework_edit.png</image>
       <caption>Editing a homework</caption>
     </screenshot>
   </screenshots>
 
   <releases>
+    <release version="5.0.0" date="2026-10-04">
+      <description translate="no">
+	<p>This release renames the app to Untix and adds support for loging in using a QR-Code</p>
+	<p>More changes include</p>
+        <ul>
+          <li>added a setting to merge long exams despite of breaks</li>
+          <li>added support for attachments in messages</li>
+          <li>added buttons to view news of older days</li>
+          <li>fixed own homeworks not showing up in timetable</li>
+          <li>make links in messages clickable</li>
+          <li>show the subject display name like the mobile app</li>
+          <li>renamed from "Timetable" to "Untix"</li>
+	  <li>updated to GNOME 51</li>
+        </ul>
+      </description>
+    </release>
     <release version="4.3.2" date="2026-09-01">
       <description translate="no">
         <p>Hotfix fixing a crash on first launch</p>

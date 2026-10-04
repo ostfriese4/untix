@@ -9,8 +9,8 @@ import binascii
 from pathlib import Path
 from hashlib import md5
 
-version = "4.3.1"
-releaseNotes = "        <p>This is a bugfix release containing minor fixes</p>\n        <ul>\n          <li>fixed refreshing of additional timetables</li>\n          <li>highlight exams</li>\n        </ul>\n        <p>Additionally, exams are highlighted now</p>\n"
+version = "5.0.0"
+releaseNotes = '	<p>This release renames the app to Untix and adds support for loging in using a QR-Code</p>\n	<p>More changes include</p>\n        <ul>\n          <li>added a setting to merge long exams despite of breaks</li>\n          <li>added support for attachments in messages</li>\n          <li>added buttons to view news of older days</li>\n          <li>fixed own homeworks not showing up in timetable</li>\n          <li>make links in messages clickable</li>\n          <li>show the subject display name like the mobile app</li>\n          <li>renamed from "Timetable" to "Untix"</li>\n	  <li>updated to GNOME 51</li>\n        </ul>\n'
 id = "page.codeberg.ostfriese4.Untis"
 useragent = id + " " + version
 

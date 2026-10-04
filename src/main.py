@@ -100,7 +100,7 @@ class UntisApplication(Adw.Application):
     def on_about_action(self, *args):
         """Callback for the app.about action."""
         about = Adw.AboutDialog(
-            application_name=_("Timetable"),
+            application_name=_("Untix"),
             application_icon=id,
             developer_name=developers[0],
             version=version,
@@ -110,7 +110,7 @@ class UntisApplication(Adw.Application):
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
         about.set_translator_credits(_("translator-credits"))
         about.set_license_type(Gtk.License.GPL_3_0)
-        about.set_issue_url("https://codeberg.org/ostfriese4/untis/issues")
+        about.set_issue_url("https://codeberg.org/ostfriese4/untix/issues")
         about.set_release_notes(releaseNotes)
         about.present(self.props.active_window)
 
