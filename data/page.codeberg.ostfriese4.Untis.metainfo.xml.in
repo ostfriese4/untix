@@ -16,9 +16,9 @@
       <li>Teacher lookup</li>
       <li>Messages (inbox only)</li>
       <li>Absences (read only)</li>
-      <li>External services (integrated web browser)</li>
+      <li>External services (embedded webpage)</li>
     </ul>
-    <p>Note that depending on your server configuration not all features will be available</p>
+    <p>Note that depending on your server configuration, not all features will be available</p>
   </description>
 
   <developer id="page.codeberg.ostfriese4">

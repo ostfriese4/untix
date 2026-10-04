@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: untis\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 16:23+0200\n"
-"PO-Revision-Date: 2026-08-21 15:09+0200\n"
+"POT-Creation-Date: 2026-10-04 19:29+0200\n"
+"PO-Revision-Date: 2026-10-04 19:32+0200\n"
 "Last-Translator: Jonas Harer <jonas.harer@icloud.com>\n"
 "Language-Team: de_DE\n"
 "Language: de\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 50.0\n"
+"X-Generator: Gtranslator 51.0\n"
 
 #: data/page.codeberg.ostfriese4.Untis.desktop.in:2
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:7 src/main.py:103
-#: src/ui/preferences.ui:11 src/ui/window.ui:6 src/ui/window.ui:19
-#: src/ui/window.ui:45
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:7
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:14 src/main.py:103
+#: src/ui/preferences.ui:11 src/ui/window.ui:18 src/ui/window.ui:44
 msgid "Timetable"
 msgstr "Stundenplan"
 
@@ -43,50 +43,59 @@ msgstr ""
 "Schüler*innen verwendeten Funktionen."
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:11
-msgid "Timetable supports"
-msgstr "Stundenplan kann"
+msgid ""
+"While it might also work for teachers, this isn't tested and many features "
+"may be missing."
+msgstr ""
+"Während Untix auch für Lehrkräfte funktionieren könnte, ist dies nicht "
+"getestet und viele Funktionen könnten fehlen."
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:13
-msgid "Viewing your timetable"
-msgstr "Deinen Stundenplan anzeigen"
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:12
+msgid "Supported features are:"
+msgstr "Unterstützte Funktionen sind:"
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:14
-msgid "Viewing and editing your homework"
-msgstr "Deine Hausaufgaben anzeigen und bearbeiten"
-
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:15
-msgid "Looking up your teachers"
-msgstr "Eine Liste aller Lehrkräfte an deiner Schule anzeigen"
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:15 src/information.py:95
+#: src/information.py:111 src/ui/window.ui:71
+msgid "Homework"
+msgstr "Hausaufgaben"
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:16
-msgid "Viewing your messages"
-msgstr "Deine Nachrichten anzeigen"
+msgid "Teacher lookup"
+msgstr "Lehrkräfte nachschlagen"
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:17
-msgid "Viewing your absences"
-msgstr "Deine Abwesenheiten anzeigen"
+msgid "Messages (inbox only)"
+msgstr "Nachrichten (nur Posteingang)"
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:18
-msgid "Multiple profiles"
-msgstr "Mehrere Profile verwalten"
+msgid "Absences (read only)"
+msgstr "Abwesenheiten (nur lesen)"
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:20
-msgid "Some features might not be available at your school"
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:19
+msgid "External services (embedded webpage)"
+msgstr "Externe Apps (eingebettete Webseite)"
+
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:21
+msgid ""
+"Note that depending on your server configuration, not all features will be "
+"available"
 msgstr ""
+"Abhängig von der konfiguration Ihres Servers könnten nicht alle Funktionen "
+"verfügbar sein"
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:24
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:25
 msgid "Ostfriese4"
 msgstr "Ostfriese4"
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:57
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:58
 msgid "The timetable"
 msgstr "Der Stundenplan"
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:61
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:62
 msgid "Dialog showing information about a lesson"
 msgstr "Informationen zur Stunde werden in einem Dialog angezeigt"
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:65
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:66
 msgid "Editing a homework"
 msgstr "Bearbeiten einer Hausaufgabe"
 
@@ -100,7 +109,7 @@ msgstr "Zeitachse anzeigen"
 
 #: data/page.codeberg.ostfriese4.Untis.gschema.xml:14 src/ui/preferences.ui:25
 msgid "Ignore breaks between exams"
-msgstr ""
+msgstr "Pausen zwischen Prüfungen ignorieren"
 
 #: src/absences.py:46
 msgid "Text"
@@ -126,7 +135,7 @@ msgstr "Ende"
 msgid "Students"
 msgstr "Schüler*innen"
 
-#: src/additional_timetables.py:96 src/ui/window.ui:82
+#: src/additional_timetables.py:96 src/ui/window.ui:81
 #: src/ui/pages/teachers.ui:12
 msgid "Teachers"
 msgstr "Lehrkräfte"
@@ -143,15 +152,15 @@ msgstr "Räume"
 msgid "and"
 msgstr "und"
 
-#: src/api.py:537 src/api.py:613
+#: src/api.py:537 src/api.py:627
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: src/api.py:608 src/api.py:611
+#: src/api.py:622 src/api.py:625
 msgid "Event"
 msgstr "Veranstaltung"
 
-#: src/api.py:756
+#: src/api.py:777
 msgid "No data"
 msgstr "Keine Daten"
 
@@ -199,62 +208,57 @@ msgstr "Die ursprüngliche Aufgabe war '%t'"
 msgid "This was originally due on %A %x"
 msgstr "Dies was ursprünglich am %A dem %x fällig."
 
-#: src/information.py:48 src/information.py:97 src/ui/create_homework.ui:41
+#: src/information.py:52 src/information.py:101 src/ui/create_homework.ui:41
 msgid "Subject"
 msgstr "Fach"
 
-#: src/information.py:49 src/information.py:98
+#: src/information.py:53 src/information.py:102
 msgid "Room"
 msgstr "Raum"
 
-#: src/information.py:50 src/information.py:99
+#: src/information.py:54 src/information.py:103
 msgid "Room description"
 msgstr "Raumbeschreibung"
 
-#: src/information.py:51 src/information.py:100
+#: src/information.py:55 src/information.py:104
 msgid "Teacher"
 msgstr "Lehrkraft"
 
-#: src/information.py:53
-#, fuzzy
+#: src/information.py:57
 msgid "Class"
-msgstr "Klassen"
+msgstr "Klasse"
 
-#: src/information.py:55
+#: src/information.py:59
 msgid "Substitution"
 msgstr "Vertretung"
 
-#: src/information.py:57
+#: src/information.py:61
 msgid "Information about this lesson"
 msgstr "Informationen zur Stunde"
 
-#: src/information.py:59
+#: src/information.py:63
 msgid "Teaching content"
 msgstr "Lehrstoff"
 
-#: src/information.py:61
+#: src/information.py:65
 msgid "Cancelled"
 msgstr "Fällt aus"
 
-#: src/information.py:69
+#: src/information.py:73
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/information.py:72
+#: src/information.py:76
 msgid "Minutes"
 msgstr "Minuten"
 
-#: src/information.py:91 src/information.py:107 src/ui/window.ui:72
-msgid "Homework"
-msgstr "Hausaufgaben"
-
-#: src/information.py:95
+#: src/information.py:99
 msgid "Original lesson"
 msgstr "Ursprüngliche Stunde"
 
-#: src/login.py:79
+#: src/login.py:74
 msgid "Invalid QR-Code"
-msgstr ""
+msgstr "Ungültiger QR-Code"
 
 #: src/login.py:105
 msgid "No results"
@@ -272,7 +276,7 @@ msgstr "Kein Internet"
 msgid "Error"
 msgstr "Fehler"
 
-#: src/login.py:141 src/ui/login.ui:73
+#: src/login.py:141 src/ui/login.ui:110
 msgid "Token"
 msgstr "Schlüssel"
 
@@ -285,21 +289,21 @@ msgstr "Ungültige Anmeldedaten"
 msgid "translator-credits"
 msgstr "Ostfriese4"
 
-#: src/messages.py:65 src/ui/create_homework.ui:23
+#: src/messages.py:151 src/ui/create_homework.ui:23
 msgid "Date"
 msgstr "Datum"
 
-#: src/messages.py:74
+#: src/messages.py:160
 msgid "Sender"
 msgstr "Absender*in"
 
-#: src/messages.py:150
+#: src/messages.py:236
 msgid "News of %m/%d/%Y"
-msgstr ""
+msgstr "Nachrichten vom %d.%m.%Y"
 
-#: src/messages.py:175
+#: src/messages.py:261
 msgid "No News for this day"
-msgstr ""
+msgstr "Keine Nachrichten für diesen Tag"
 
 #: src/offline_banner.py:40 src/ui/offline_banner.ui:8
 msgid "You are offline"
@@ -310,9 +314,8 @@ msgid "You are offline, last connection at %H:%M"
 msgstr "Keine Internetverbindung, zuletzt verbunden um %H:%M"
 
 #: src/offline_banner.py:44
-#, fuzzy
 msgid "You are offline, last connection on %B %d, %Y %H:%M"
-msgstr "Keine Internetverbindung, zuletzt verbunden um %H:%M"
+msgstr "Keine Internetverbindung, zuletzt verbunden am %d.%m um %H:%M"
 
 #: src/profiles.py:38
 msgid "Unnamed"
@@ -336,22 +339,22 @@ msgstr "Das einzige Profil kann nicht gelöscht werden"
 msgid "Do you really want to delete this profile?"
 msgstr "Wollen Sie dieses Profil wirklich löschen?"
 
-#: src/timetable.py:417
+#: src/timetable.py:418
 msgid "Week %W"
 msgstr "%W. Woche"
 
 #. Translators: date format in the timetable
-#: src/timetable.py:476
+#: src/timetable.py:477
 msgid "%m/%d/%y"
 msgstr "%d.%m.%y"
 
 #: src/ui/attachment.ui:8
 msgid "Save attachment"
-msgstr ""
+msgstr "Anhang speichern"
 
 #: src/ui/attachment.ui:14
 msgid "Open attachment"
-msgstr ""
+msgstr "Anhang öffnen"
 
 #: src/ui/create_homework.ui:36
 msgid "Task"
@@ -361,7 +364,7 @@ msgstr "Aufgabe"
 msgid "Completed"
 msgstr "Erledigt"
 
-#: src/ui/create_homework.ui:64 src/ui/login.ui:91
+#: src/ui/create_homework.ui:64 src/ui/login.ui:127
 msgid "Save"
 msgstr "Speichern"
 
@@ -369,7 +372,7 @@ msgstr "Speichern"
 msgid "Mark as completed"
 msgstr "Als erledigt markieren"
 
-#: src/ui/homework_row.ui:37
+#: src/ui/homework_row.ui:39
 msgid "You have changed this"
 msgstr "Sie haben dies geändert"
 
@@ -381,57 +384,45 @@ msgstr "Informationen"
 msgid "Login"
 msgstr "Anmelden"
 
-#: src/ui/login.ui:15
-msgid "Login using a QR-Code"
-msgstr ""
+#: src/ui/login.ui:27
+msgid "How do you want to log in?"
+msgstr "Wie möchten Sie sich anmelden?"
 
-#: src/ui/login.ui:29
+#: src/ui/login.ui:31
+msgid "Login using a QR-Code"
+msgstr "QR-Code verwenden"
+
+#: src/ui/login.ui:37
+msgid "Login using credentials"
+msgstr "Anmeldedaten verwenden"
+
+#: src/ui/login.ui:76
 msgid "Profile name"
 msgstr "Profilname"
 
-#: src/ui/login.ui:38
-msgid "I usually log in using a third-party service"
-msgstr "I melde mich normalerweise über einen Drittanbieter an"
-
-#: src/ui/login.ui:44 src/ui/login.ui:106
-msgid "Search school"
-msgstr "Schule suchen"
-
-#: src/ui/login.ui:54
+#: src/ui/login.ui:85
 msgid "Server-URL"
 msgstr "Server-URL"
 
-#: src/ui/login.ui:59 src/ui/login.ui:116
+#: src/ui/login.ui:90 src/ui/login.ui:148
 msgid "School"
 msgstr "Schule"
 
-#: src/ui/login.ui:64
+#: src/ui/login.ui:94
+msgid "Search schools"
+msgstr "Schule suchen"
+
+#: src/ui/login.ui:101
 msgid "Username"
 msgstr "Benutzername"
 
-#: src/ui/login.ui:69
+#: src/ui/login.ui:106
 msgid "Authentication method"
 msgstr "Authentifizierungsmethode"
 
-#: src/ui/login.ui:74
+#: src/ui/login.ui:111
 msgid "Password"
 msgstr "Passwort"
-
-#: src/ui/login.ui:137
-msgid "Help"
-msgstr "Hilfe"
-
-#: src/ui/login.ui:150
-msgid ""
-"If you are logging usually logging into WebUntis using a third party sso "
-"(e.g. IServ), follow the same steps as for the official app at https://"
-"help.untis.at/hc/en-150/articles/16515466619548-How-do-I-log-into-Untis-"
-"Mobile-if-my-school-has-set-up-SSO"
-msgstr ""
-
-#: src/ui/login.ui:162
-msgid "Scan QR-Code"
-msgstr ""
 
 #: src/ui/offline_banner.ui:9
 msgid "Try again"
@@ -488,43 +479,43 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/ui/window.ui:28
+#: src/ui/window.ui:27
 msgid "Main Menu"
 msgstr "Hauptmenü"
 
-#: src/ui/window.ui:52
+#: src/ui/window.ui:51
 msgid "My timetable"
 msgstr "Mein Stundenplan"
 
-#: src/ui/window.ui:62 src/ui/pages/additional_timetables.ui:16
+#: src/ui/window.ui:61 src/ui/pages/additional_timetables.ui:16
 msgid "All timetables"
 msgstr "Alle Stundenpläne"
 
-#: src/ui/window.ui:92 src/ui/pages/messages.ui:12 src/ui/pages/messages.ui:59
+#: src/ui/window.ui:91 src/ui/pages/messages.ui:12 src/ui/pages/messages.ui:59
 msgid "Messages"
 msgstr "Nachrichten"
 
-#: src/ui/window.ui:102 src/ui/pages/absences.ui:12
+#: src/ui/window.ui:101 src/ui/pages/absences.ui:12
 msgid "Absences"
 msgstr "Abwesenheiten"
 
-#: src/ui/window.ui:119
+#: src/ui/window.ui:118
 msgid "_Refresh"
 msgstr "_Aktualisieren"
 
-#: src/ui/window.ui:123
+#: src/ui/window.ui:122
 msgid "Manage _profiles"
 msgstr "_Profile verwalten"
 
-#: src/ui/window.ui:127
+#: src/ui/window.ui:126
 msgid "_Preferences"
 msgstr "_Einstellungen"
 
-#: src/ui/window.ui:133
+#: src/ui/window.ui:132
 msgid "_Keyboard Shortcuts"
 msgstr "_Tastenkürzel"
 
-#: src/ui/window.ui:137
+#: src/ui/window.ui:136
 msgid "_About Timetable"
 msgstr "Über _Stundenplan"
 
@@ -561,13 +552,12 @@ msgid "You have no unfinished homework"
 msgstr "Du hast keine unerledigten Hausaufgaben"
 
 #: src/ui/pages/messages.ui:44
-#, fuzzy
 msgid "Previous day"
-msgstr "Vorherige Woche"
+msgstr "Vorheriger Tag"
 
 #: src/ui/pages/messages.ui:50
 msgid "Next day"
-msgstr ""
+msgstr "Nächster Tag"
 
 #: src/ui/pages/teachers.ui:37
 msgid "Search term"
@@ -584,6 +574,33 @@ msgstr "Zu Datum springen"
 #: src/ui/pages/timetable.ui:27
 msgid "Next week"
 msgstr "Nächste Woche"
+
+#~ msgid "Timetable supports"
+#~ msgstr "Stundenplan kann"
+
+#~ msgid "Viewing your timetable"
+#~ msgstr "Deinen Stundenplan anzeigen"
+
+#~ msgid "Viewing and editing your homework"
+#~ msgstr "Deine Hausaufgaben anzeigen und bearbeiten"
+
+#~ msgid "Looking up your teachers"
+#~ msgstr "Eine Liste aller Lehrkräfte an deiner Schule anzeigen"
+
+#~ msgid "Viewing your messages"
+#~ msgstr "Deine Nachrichten anzeigen"
+
+#~ msgid "Viewing your absences"
+#~ msgstr "Deine Abwesenheiten anzeigen"
+
+#~ msgid "Multiple profiles"
+#~ msgstr "Mehrere Profile verwalten"
+
+#~ msgid "I usually log in using a third-party service"
+#~ msgstr "I melde mich normalerweise über einen Drittanbieter an"
+
+#~ msgid "Help"
+#~ msgstr "Hilfe"
 
 #~ msgid ""
 #~ "If you are logging usually logging into WebUntis using a third party sso "
