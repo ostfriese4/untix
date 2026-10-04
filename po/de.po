@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: untis\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 19:29+0200\n"
-"PO-Revision-Date: 2026-10-04 19:32+0200\n"
+"POT-Creation-Date: 2026-10-04 19:52+0200\n"
+"PO-Revision-Date: 2026-10-04 19:55+0200\n"
 "Last-Translator: Jonas Harer <jonas.harer@icloud.com>\n"
 "Language-Team: de_DE\n"
 "Language: de\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: data/page.codeberg.ostfriese4.Untis.desktop.in:2
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:7
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:14 src/main.py:103
-#: src/ui/preferences.ui:11 src/ui/window.ui:18 src/ui/window.ui:44
+#: src/ui/preferences.ui:22 src/ui/window.ui:18 src/ui/window.ui:44
 msgid "Timetable"
 msgstr "Stundenplan"
 
@@ -99,17 +99,21 @@ msgstr "Informationen zur Stunde werden in einem Dialog angezeigt"
 msgid "Editing a homework"
 msgstr "Bearbeiten einer Hausaufgabe"
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:6 src/ui/preferences.ui:15
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:6 src/ui/preferences.ui:26
 msgid "Show cancelled lessons if, there is a replacement"
 msgstr "Abgesagte Stunden anzeigen, auch wenn Ersatz stattfindet"
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:10 src/ui/preferences.ui:20
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:10 src/ui/preferences.ui:31
 msgid "Show the time axis"
 msgstr "Zeitachse anzeigen"
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:14 src/ui/preferences.ui:25
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:14 src/ui/preferences.ui:36
 msgid "Ignore breaks between exams"
 msgstr "Pausen zwischen Prüfungen ignorieren"
+
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:18 src/ui/preferences.ui:14
+msgid "Hide unsupported features"
+msgstr "Nicht unterstützte Funktionen ausblenden"
 
 #: src/absences.py:46
 msgid "Text"
@@ -428,7 +432,15 @@ msgstr "Passwort"
 msgid "Try again"
 msgstr "Erneut versuchen"
 
-#: src/ui/preferences.ui:14
+#: src/ui/preferences.ui:11
+msgid "General"
+msgstr "Allgemein"
+
+#: src/ui/preferences.ui:15
+msgid "Hide features that are not supported by your server"
+msgstr "Funktionen ausblenden, die von Ihrem Server nicht unterstützt werden"
+
+#: src/ui/preferences.ui:25
 msgid "Show all cancelled lessons"
 msgstr "Alle abgesagten Stunden anzeigen"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: untix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 19:29+0200\n"
+"POT-Creation-Date: 2026-10-04 19:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: data/page.codeberg.ostfriese4.Untis.desktop.in:2
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:7
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:14 src/main.py:103
-#: src/ui/preferences.ui:11 src/ui/window.ui:18 src/ui/window.ui:44
+#: src/ui/preferences.ui:22 src/ui/window.ui:18 src/ui/window.ui:44
 msgid "Timetable"
 msgstr ""
 
@@ -91,16 +91,20 @@ msgstr ""
 msgid "Editing a homework"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:6 src/ui/preferences.ui:15
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:6 src/ui/preferences.ui:26
 msgid "Show cancelled lessons if, there is a replacement"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:10 src/ui/preferences.ui:20
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:10 src/ui/preferences.ui:31
 msgid "Show the time axis"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:14 src/ui/preferences.ui:25
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:14 src/ui/preferences.ui:36
 msgid "Ignore breaks between exams"
+msgstr ""
+
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:18 src/ui/preferences.ui:14
+msgid "Hide unsupported features"
 msgstr ""
 
 #: src/absences.py:46
@@ -420,7 +424,15 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
-#: src/ui/preferences.ui:14
+#: src/ui/preferences.ui:11
+msgid "General"
+msgstr ""
+
+#: src/ui/preferences.ui:15
+msgid "Hide features that are not supported by your server"
+msgstr ""
+
+#: src/ui/preferences.ui:25
 msgid "Show all cancelled lessons"
 msgstr ""
 
