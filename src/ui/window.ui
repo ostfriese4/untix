@@ -9,10 +9,12 @@
       <object class="AdwBreakpoint" id="sidebar_breakpoint">
         <condition>max-width: 500sp</condition>
         <setter object="split_view" property="collapsed">True</setter>
+        <setter object="sidebar" property="mode">page</setter>
       </object>
     </child>
     <property name="content">
-      <object class="AdwOverlaySplitView" id="split_view">
+      <object class="AdwNavigationSplitView" id="split_view">
+        <property name="show-content">true</property>
         <property name="sidebar">
           <object class="AdwNavigationPage">
             <property name="title" translatable="yes">Untix</property>

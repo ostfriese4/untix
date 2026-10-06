@@ -167,7 +167,6 @@ class Message(Adw.ExpanderRow):
 class MessagesPage(Gtk.Box):
     __gtype_name__ = "MessagesPage"
 
-    show_sidebar_button = Gtk.Template.Child()
     offline = Gtk.Template.Child()
     container = Gtk.Template.Child()
     news_of_day = Gtk.Template.Child()
@@ -183,14 +182,6 @@ class MessagesPage(Gtk.Box):
         self.next_day.connect("clicked", self.next)
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
         def on_visible(page, pspec):
             if parent.main_view_stack.get_visible_child_name() == "messages":
                 self.display()

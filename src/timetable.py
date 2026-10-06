@@ -92,7 +92,6 @@ class Timetable(Gtk.Box):
     timetable = Gtk.Template.Child()
     next_button = Gtk.Template.Child()
     previous_button = Gtk.Template.Child()
-    show_sidebar_button = Gtk.Template.Child()
 
     progress = Gtk.Template.Child()
 
@@ -176,14 +175,6 @@ class Timetable(Gtk.Box):
         return True
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
         self.initTimetable(parent)
 
     def initTimetable(self, parent):

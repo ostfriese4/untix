@@ -32,7 +32,6 @@ import os
 class ExternalPage(Gtk.Box):
     __gtype_name__ = 'ExternalPage'
 
-    show_sidebar_button = Gtk.Template.Child()
     open_button = Gtk.Template.Child()
     back_button = Gtk.Template.Child()
     next_button = Gtk.Template.Child()
@@ -124,14 +123,6 @@ class ExternalPage(Gtk.Box):
 
     def enable_bindings(self, parent):
         self.shared = parent.shared
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
         def on_visible(page, pspec):
             if parent.main_view_stack.get_visible_child_name() == self.id:
                 if not self.loaded:

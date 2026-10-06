@@ -27,7 +27,6 @@ from .timetable import Timetable
 class AdditionalTimetablesPage(Gtk.Box):
     __gtype_name__ = "AdditionalTimetablesPage"
 
-    show_sidebar_button = Gtk.Template.Child()
     offline = Gtk.Template.Child()
     container = Gtk.Template.Child()
     timetable_page = Gtk.Template.Child()
@@ -42,14 +41,6 @@ class AdditionalTimetablesPage(Gtk.Box):
         self.isDisplayed = False
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
         def on_visible(*args):
             if parent.main_view_stack.get_visible_child_name() == "additional_timetables":
                 if self.isDisplayed:
@@ -84,6 +75,8 @@ class AdditionalTimetablesPage(Gtk.Box):
     def display(self):
         self.isDisplayed = True
         timetables = self.shared.session.getAvailableTimetables()
+
+        print(self.parent.sidebar.get_stack().get_pages())
 
         for section in self.displayed:
             section = self.displayed[section]

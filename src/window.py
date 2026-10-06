@@ -81,6 +81,8 @@ class UntisWindow(Adw.ApplicationWindow):
             "changed::hide-unsupported-features", lambda *args: self.showHideViews()
         )
 
+        self.sidebar.connect("activated", lambda *args: self.split_view.set_show_content(True))
+
         def renameWindow(*args):
             child = self.main_view_stack.get_visible_child()
             page = self.main_view_stack.get_page(child)

@@ -26,7 +26,6 @@ from .offline_banner import OfflineBanner
 class TeacherPage(Gtk.Box):
     __gtype_name__ = 'TeacherPage'
 
-    show_sidebar_button = Gtk.Template.Child()
     offline = Gtk.Template.Child()
     container = Gtk.Template.Child()
     search = Gtk.Template.Child()
@@ -37,14 +36,6 @@ class TeacherPage(Gtk.Box):
         self.search.connect("changed", self.displayResults)
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
         def on_visible(page, pspec):
             if parent.main_view_stack.get_visible_child_name() == "teachers":
                 self.displayResults()

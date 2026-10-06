@@ -17,12 +17,6 @@
                         <property name="halign">GTK_ALIGN_CENTER</property>
                       </object>
                     </property>
-                    <child type="start">
-                      <object class="GtkToggleButton" id="show_sidebar_button">
-                        <property name="icon-name">adw-sidebar-symbolic</property>
-                        <property name="visible">False</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
                 <property name="content">

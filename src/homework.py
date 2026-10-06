@@ -31,7 +31,6 @@ import datetime
 class HomeworkList(Gtk.Box):
     __gtype_name__ = "HomeworkList"
 
-    show_sidebar_button = Gtk.Template.Child()
     offline = Gtk.Template.Child()
     container_done = Gtk.Template.Child()
     container_undone = Gtk.Template.Child()
@@ -44,14 +43,6 @@ class HomeworkList(Gtk.Box):
         self.scrollTo = None
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
         def on_visible(page, pspec):
             if parent.main_view_stack.get_visible_child_name() == "homework":
                 self.displayAll()
