@@ -6,7 +6,7 @@
     <child>
       <object class="AdwNavigationView" id="view">
         <child>
-          <object class="AdwNavigationPage">
+          <object class="AdwNavigationPage" id="main_page">
             <child>
               <object class="AdwToolbarView">
                 <child type="top">

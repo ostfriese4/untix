@@ -32,12 +32,14 @@ class AdditionalTimetablesPage(Gtk.Box):
     container = Gtk.Template.Child()
     timetable_page = Gtk.Template.Child()
     view = Gtk.Template.Child()
+    main_page = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.displayed = {}
         self.currentTimetable = None
         self.nested_offline = self.offline
+        self.isDisplayed = False
 
     def enable_bindings(self, parent):
         parent.split_view.bind_property(
@@ -48,11 +50,17 @@ class AdditionalTimetablesPage(Gtk.Box):
         )
         parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
 
-        def on_visible(page, pspec):
+        def on_visible(*args):
             if parent.main_view_stack.get_visible_child_name() == "additional_timetables":
+                if self.isDisplayed:
+                    if self.currentTimetable is not None:
+                        self.view.pop_to_page(self.main_page)
+                        self.currentTimetable = None
                 self.display()
+            else:
+                self.isDisplayed = False
 
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
+        parent.sidebar.connect("activated", on_visible)
         self.shared = parent.shared
         self.parent = parent
 
@@ -74,6 +82,7 @@ class AdditionalTimetablesPage(Gtk.Box):
         self.display()
 
     def display(self):
+        self.isDisplayed = True
         timetables = self.shared.session.getAvailableTimetables()
 
         for section in self.displayed:

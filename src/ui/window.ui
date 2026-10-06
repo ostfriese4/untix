@@ -31,7 +31,7 @@
                   </object>
                 </child>
                 <property name="content">
-                  <object class="AdwViewSwitcherSidebar">
+                  <object class="AdwViewSwitcherSidebar" id="sidebar">
                     <property name="stack">main_view_stack</property>
                   </object>
                 </property>

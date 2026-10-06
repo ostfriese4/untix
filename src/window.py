@@ -48,6 +48,7 @@ class UntisWindow(Adw.ApplicationWindow):
     main_view_stack = Gtk.Template.Child()
     sidebar_breakpoint = Gtk.Template.Child()
     split_view = Gtk.Template.Child()
+    sidebar = Gtk.Template.Child()
     teachers = Gtk.Template.Child()
     messages = Gtk.Template.Child()
     messages_page = Gtk.Template.Child()
