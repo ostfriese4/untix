@@ -122,3 +122,15 @@ class HomeworkList(Gtk.Box):
                 self.days[dayName] = (container, day)
             row = HomeworkRow(homework)
             day.add(row)
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Modules"),
+            "widget": HomeworkList(),
+            "name": "homework",
+            "title": _("Homework"),
+            "icon": "agenda-symbolic",
+        }
+    ]
+}

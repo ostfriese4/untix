@@ -108,3 +108,15 @@ class AdditionalTimetablesPage(Gtk.Box):
                 section = self.displayed[timetable["name"]]
 
             section.add(row)
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Timetables"),
+            "widget": AdditionalTimetablesPage(),
+            "name": "additional_timetables",
+            "title": _("All timetables"),
+            "icon": "month-symbolic",
+        }
+    ]
+}

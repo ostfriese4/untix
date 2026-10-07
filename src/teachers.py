@@ -71,3 +71,15 @@ class TeacherPage(Gtk.Box):
             row = Adw.ActionRow(title=teacher)
             self.container.add(row)
             self.displayed.append(row)
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Modules"),
+            "widget": TeacherPage(),
+            "name": "teachers",
+            "title": _("Teachers"),
+            "icon": "system-users-symbolic",
+        }
+    ]
+}

@@ -128,3 +128,39 @@ class ExternalPage(Gtk.Box):
                 if not self.loaded:
                     GLib.idle_add(self.load)
         parent.main_view_stack.connect("notify::visible-child-name", on_visible)
+
+def addExternalPages(window):
+    groupName = _("External")
+
+    needed = window.shared.session.getMenu()
+
+    for page in window.dynamicPages:
+        if page["group"] == _("External"):
+            if page["data"] in needed:
+                needed.remove(page["data"])
+            else:
+                window.dynamicPages.remove(page)
+
+    for pageData in needed:
+        id = "external" + pageData["name"] + pageData["redirectUrl"]
+
+        content = ExternalPage(pageData, id)
+        content.enable_bindings(window)
+
+        window.dynamicPages.append({
+            "group": groupName,
+            "data": pageData,
+            "widget": content,
+            "name": id,
+            "icon": "globe-alt-symbolic",
+            "title": pageData["name"],
+        })
+
+moduleInfo = {
+    "pageProviders": [
+        {
+            "name": "external-pages",
+            "code": addExternalPages
+        }
+    ]
+}

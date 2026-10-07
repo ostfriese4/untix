@@ -505,3 +505,15 @@ class Timetable(Gtk.Box):
 
         if not dontClose and self.information_window.lesson is not None:
             self.information_window.close()
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Timetables"),
+            "widget": Timetable(),
+            "name": "timetable",
+            "title": _("My timetable"),
+            "icon": "month-symbolic",
+        }
+    ]
+}

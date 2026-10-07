@@ -18,17 +18,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from .login import LoginWindow
-from .timetable import Timetable
-from .additional_timetables import AdditionalTimetablesPage
-from .homework import HomeworkList
-from .teachers import TeacherPage
-from .messages import MessagesPage
-from .absences import AbsencesPage
 from .create_homework import HomeworkEditWindow
 from .credentials import getCredentials
 from .api import testCredentials, id as appId
 from .profiles import ProfilesWindow
-from .external_page import ExternalPage
 from gi.repository import Adw
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -47,71 +40,15 @@ class UntisWindow(Adw.ApplicationWindow):
     def __init__(self, shared, **kwargs):
         super().__init__(**kwargs)
 
-        self.absences = AbsencesPage()
-        self.additional_timetables = AdditionalTimetablesPage()
-        self.homework = HomeworkList()
-        self.messages = MessagesPage()
-        self.teachers = TeacherPage()
-        self.timetable = Timetable()
-
-        self.pages = [
-            {
-                "group": _("Timetables"),
-                "widget": self.timetable,
-                "name": "timetable",
-                "title": _("My timetable"),
-                "icon": "month-symbolic",
-            },
-            {
-                "group": _("Timetables"),
-                "widget": self.additional_timetables,
-                "name": "additional_timetables",
-                "title": _("All timetables"),
-                "icon": "month-symbolic",
-            },
-            {
-                "group": _("Modules"),
-                "widget": self.homework,
-                "name": "homework",
-                "title": _("Homework"),
-                "icon": "agenda-symbolic",
-            },
-            {
-                "group": _("Modules"),
-                "widget": self.absences,
-                "name": "absences",
-                "title": _("Absences"),
-                "icon": "appointment-soon-symbolic",
-            },
-            {
-                "group": _("Modules"),
-                "widget": self.messages,
-                "name": "messages",
-                "title": _("Messages"),
-                "icon": "mail-unread-symbolic",
-            },
-            {
-                "group": _("Modules"),
-                "widget": self.teachers,
-                "name": "teachers",
-                "title": _("Teachers"),
-                "icon": "system-users-symbolic",
-            },
-        ]
+        self.pages = []
         self.dynamicPages = []
         self.hiddenPages = []
+        self.pageProviders = []
 
         self.shared = shared
         self.login_window = LoginWindow(self)
         self.homeworkEditWindow = HomeworkEditWindow(self)
         self.profiles_window = ProfilesWindow(self)
-
-        self.timetable.enable_bindings(self)
-        self.homework.enable_bindings(self)
-        self.teachers.enable_bindings(self)
-        self.messages.enable_bindings(self)
-        self.absences.enable_bindings(self)
-        self.additional_timetables.enable_bindings(self)
 
         # runs after the handlers of the pages, so their data is loaded
         self.main_view_stack.connect(
@@ -136,10 +73,39 @@ class UntisWindow(Adw.ApplicationWindow):
         renameWindow()
         self.main_view_stack.connect("notify::visible-child-name", renameWindow)
 
-        GLib.idle_add(self.showHideViews)
-        GLib.idle_add(self.updateOfflineBanners)
+        GLib.idle_add(self.loadModules)
+
+    def loadModule(self, name):
+        print("loading module", name)
+        try:
+            module = __import__("untix." + name, fromlist=["*"])
+            info = module.moduleInfo
+            if "staticPages" in info:
+                pages = info["staticPages"]
+                for page in pages:
+                    self.pages.append(page)
+                    page["widget"].enable_bindings(self)
+            if "pageProviders" in info:
+                providers = info["pageProviders"]
+                self.pageProviders += providers
+        except Exception:
+            print("failed to load module", name)
+
+    def loadModules(self):
+        for name in [
+            "timetable",
+            "messages",
+            "absences",
+            "teachers",
+            "additional_timetables",
+            "external_page",
+            "homework",
+        ]:
+            self.loadModule(name)
+        self.showHideViews()
 
     def updateOfflineBanners(self):
+        model = self.main_view_stack.get_pages()
         try:
             offline = self.shared.session.getOffline()
             last = self.shared.session.getLastOnline()
@@ -147,15 +113,13 @@ class UntisWindow(Adw.ApplicationWindow):
             print("could not get last online information")
             return
 
-        offline_banners = [
-            self.timetable.offline,
-            self.homework.offline,
-            self.teachers.offline,
-            self.messages.offline,
-            self.absences.offline,
-            self.additional_timetables.offline,
-            self.additional_timetables.nested_offline,
-        ]
+        offline_banners = []
+        for i in range(model.get_n_items()):
+            page = model.get_item(i)
+            try:
+                offline_banners.append(page.get_child().offline)
+            except Exception:
+                print(f"page {page.get_name()} does not have an offline-banner")
 
         for banner in offline_banners:
             banner.update(offline, last)
@@ -165,15 +129,16 @@ class UntisWindow(Adw.ApplicationWindow):
         visiblePage = self.main_view_stack.get_visible_child()
         visiblePages = []
         for i in range(model.get_n_items()):
-            page = model.get_object(i)
+            page = model.get_item(i)
             visiblePages.append(page.get_child())
         for page in visiblePages:
             self.main_view_stack.remove(page)
 
         allPages = self.pages + self.dynamicPages
-        for page in allPages.copy():
-            if page["widget"] in self.hiddenPages:
-                allPages.remove(page)
+        if self.settings.get_boolean("hide-unsupported-features"):
+            for page in allPages.copy():
+                if page["widget"] in self.hiddenPages:
+                    allPages.remove(page)
 
         groups = {}
         for page in allPages:
@@ -201,75 +166,50 @@ class UntisWindow(Adw.ApplicationWindow):
 
         if visiblePage in allPages:
             self.main_view_stack.set_visible_child(visiblePage)
+        self.updateOfflineBanners()
 
     def hidePage(self, page):
         if not page in self.hiddenPages:
             self.hiddenPages.append(page)
-
-    def shouldViewHide(self, name):
-        show = name in self.shared.session.getPermissions()["views"]
-        return not show
 
     def showPage(self, page):
         if page in self.hiddenPages:
             self.hiddenPages.remove(page)
 
     def showHideViews(self):
-        if self.messages.shouldHide():
-            self.hidePage(self.messages)
-        else:
-            self.showPage(self.messages)
+        for page in self.pages:
+            try:
+                hide = page["widget"].shouldHide()
+            except Exception:
+                hide = False
+                print("failed to run shouldHide() of page", page["name"])
+            if hide:
+                self.hidePage(page)
+            else:
+                self.showPage(page)
 
-        if self.absences.shouldHide():
-            self.hidePage(self.absences)
-        else:
-            self.showPage(self.absences)
+        for provider in self.pageProviders:
+            code = provider["code"]
+            try:
+                code(self)
+            except Exception:
+                print("failed to run page provider", provider["name"])
 
-        if self.teachers.shouldHide():
-            self.hidePage(self.teachers)
-        else:
-            self.showPage(self.teachers)
-
-        if self.additional_timetables.shouldHide():
-            self.hidePage(self.additional_timetables)
-        else:
-            self.showPage(self.additional_timetables)
-
-        self.addExternalPages()
         self.rebuildSidebar()
-
-    def addExternalPages(self):
-        groupName = _("External")
-
-        needed = self.shared.session.getMenu()
-
-        for page in self.dynamicPages:
-            if page["group"] == _("External"):
-                if page["data"] in needed:
-                    needed.remove(page["data"])
-                else:
-                    self.dynamicPages.remove(page)
-
-        for pageData in needed:
-            id = "external" + pageData["name"] + pageData["redirectUrl"]
-
-            content = ExternalPage(pageData, id)
-            content.enable_bindings(self)
-
-            self.dynamicPages.append({
-                "group": groupName,
-                "data": pageData,
-                "widget": content,
-                "name": id,
-                "icon": "globe-alt-symbolic",
-                "title": pageData["name"],
-            })
 
     def homeworksChanged(self):
         # keep the homework page and the indicators in the timetable in
         # sync when a homework is created, edited, checked off or deleted
-        self.homework.displayAll()
-        self.timetable.refreshHomeworks()
+        homework = self.main_view_stack.get_child_by_name("homework")
+        if homework is not None:
+            homework.displayAll()
+        timetable = self.main_view_stack.get_child_by_name("timetable")
+        if timetable is not None:
+            timetable.refreshHomeworks()
+        additional = self.main_view_stack.get_child_by_name("additional_timetables")
+        if additional is not None:
+            if additional.currentTimetable is not None:
+                additional.currentTimetable.refreshHomeworks()
 
     def refresh(self):
         self.shared.session.refresh()

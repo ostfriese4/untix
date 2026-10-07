@@ -111,3 +111,15 @@ class AbsencesPage(Gtk.Box):
             row = Absence(absence)
             self.container.add(row)
             self.displayed.append(row)
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Modules"),
+            "widget": AbsencesPage(),
+            "name": "absences",
+            "title": _("Absences"),
+            "icon": "appointment-soon-symbolic",
+        }
+    ]
+}

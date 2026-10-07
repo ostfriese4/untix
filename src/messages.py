@@ -260,3 +260,15 @@ class MessagesPage(Gtk.Box):
             self.displayedNews.append(row)
 
         self.countUnread()
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Modules"),
+            "widget": MessagesPage(),
+            "name": "messages",
+            "title": _("Messages"),
+            "icon": "mail-unread-symbolic",
+        }
+    ]
+}
