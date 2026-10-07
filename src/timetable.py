@@ -164,12 +164,13 @@ class Timetable(Gtk.Box):
         self.date_chooser_dialog.close()
         self.jump_to(date)
 
-    def jump_to(self, date):
+    def jump_to(self, date, display = True):
         self.startdate = date - datetime.timedelta(days=date.weekday())
         self.enddate = self.startdate + datetime.timedelta(days=4)
         while self.enddate < date:
-            self.next()
-        self.loadData()
+            self.next(display = False)
+        if display:
+            self.loadData()
 
     def update_marker(self):
         for overlay in self.overlays:
@@ -178,24 +179,21 @@ class Timetable(Gtk.Box):
 
     def enable_bindings(self, parent):
         self.shared = parent.shared
-
         self.window = parent
-        try:
-            self.jump_to(getDateTime())
-        except:
-            pass
+        self.jump_to(getDateTime(), display = False)
 
-    def next(self, data=None):
+    def next(self, data=None, display = True):
         self.startdate += datetime.timedelta(days=7)
         self.enddate += datetime.timedelta(days=7)
-        self.loadData()
+        if display:
+            self.loadData()
 
     def previous(self, data=None):
         self.startdate -= datetime.timedelta(days=7)
         self.enddate -= datetime.timedelta(days=7)
         self.loadData()
 
-    def refresh(self):
+    def refresh(self, reason):
         self.loadData()
 
     def refreshHomeworks(self):

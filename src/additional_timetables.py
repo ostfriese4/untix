@@ -49,7 +49,6 @@ class AdditionalTimetablesPage(Gtk.Box):
                     if self.currentTimetable is not None:
                         self.view.pop_to_page(self.main_page)
                         self.currentTimetable = None
-                self.display()
             else:
                 self.isDisplayed = False
 
@@ -69,7 +68,7 @@ class AdditionalTimetablesPage(Gtk.Box):
     def shouldHide(self):
         return len(self.shared.session.getAvailableTimetables()) <= 1 # hide if no or only one (probably the one of the user) timetable exists
 
-    def refresh(self):
+    def refresh(self, reason):
         if self.currentTimetable is not None:
             self.currentTimetable.refresh()
         self.display()

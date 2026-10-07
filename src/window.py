@@ -55,6 +55,7 @@ class UntisWindow(Adw.ApplicationWindow):
         self.main_view_stack.connect(
             "notify::visible-child-name", lambda *args: self.updateOfflineBanners()
         )
+        self.main_view_stack.connect("notify::visible-child-name", self.refreshPage)
 
         self.settings = Gio.Settings(schema_id=appId)
         self.settings.connect(
@@ -218,17 +219,17 @@ class UntisWindow(Adw.ApplicationWindow):
             if additional.currentTimetable is not None:
                 additional.currentTimetable.refreshHomeworks()
 
-    def refreshPage(self):
+    def refreshPage(self, *args, reason = "open"):
         try:
             page = self.main_view_stack.get_visible_child()
-            page.refresh()
+            page.refresh(reason)
         except Exception:
             print("refresh not implemented by page", self.main_view_stack.get_visible_child_name())
             self.shared.session.getOwnId() # request to update online status
 
     def refresh(self):
         self.shared.session.refresh()
-        self.refreshPage()
+        self.refreshPage(reason = "refresh")
         self.updateOfflineBanners()
 
     def reload(self):

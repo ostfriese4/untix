@@ -74,11 +74,6 @@ class AbsencesPage(Gtk.Box):
         self.displayed = []
 
     def enable_bindings(self, parent):
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == "absences":
-                self.display()
-
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
         self.parent = parent
 
@@ -98,6 +93,9 @@ class AbsencesPage(Gtk.Box):
     def shouldHide(self):
         absences = self.shared.session.getAbsences()
         return absences is None or absences == []
+
+    def refresh(self, reason):
+        self.display()
 
     def display(self):
         absences = self.shared.session.getAbsences()

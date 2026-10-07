@@ -59,8 +59,13 @@ class ExternalPage(Gtk.Box):
             self.webview.load_uri(self.data["redirectUrl"])
         self.home_button.connect("clicked", home)
 
-    def refresh(self):
-        self.webview.reload()
+    def refresh(self, reason):
+        if reason = "open":
+            if not self.loaded:
+                self.load()
+                self.loaded = True
+        else:
+            self.webview.reload()
 
     def open(self, data):
         Gio.AppInfo.launch_default_for_uri(self.webview.get_uri(), None)
@@ -123,10 +128,6 @@ class ExternalPage(Gtk.Box):
 
     def enable_bindings(self, parent):
         self.shared = parent.shared
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == self.id:
-                if not self.loaded:
-                    GLib.idle_add(self.load)
         parent.main_view_stack.connect("notify::visible-child-name", on_visible)
 
 def addExternalPages(window):

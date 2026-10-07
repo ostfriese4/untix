@@ -43,13 +43,11 @@ class HomeworkList(Gtk.Box):
         self.scrollTo = None
 
     def enable_bindings(self, parent):
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == "homework":
-                self.displayAll()
-
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
         self.parent = parent
+
+    def refresh(self, reason):
+        self.displayAll()
 
     def onAdded(self):
         self.displayAll()

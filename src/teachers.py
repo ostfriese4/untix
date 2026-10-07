@@ -36,11 +36,10 @@ class TeacherPage(Gtk.Box):
         self.search.connect("changed", self.displayResults)
 
     def enable_bindings(self, parent):
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == "teachers":
-                self.displayResults()
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
+
+    def refresh(self, reason):
+        self.displayResults()
 
     def displayResults(self, data = None):
         term = self.search.get_text().lower()

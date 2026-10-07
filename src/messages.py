@@ -182,11 +182,6 @@ class MessagesPage(Gtk.Box):
         self.next_day.connect("clicked", self.next)
 
     def enable_bindings(self, parent):
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == "messages":
-                self.display()
-
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
         self.parent = parent
 
@@ -204,7 +199,7 @@ class MessagesPage(Gtk.Box):
 
         return True
 
-    def refresh(self):
+    def refresh(self, reason):
         self.display()
 
     def countUnread(self):
