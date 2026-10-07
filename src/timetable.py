@@ -99,8 +99,10 @@ class Timetable(Gtk.Box):
     date_chooser = Gtk.Template.Child()
     date_chooser_dialog = Gtk.Template.Child()
 
-    def __init__(self, resourceType = None, resourceId = None, **kwargs):
+    def __init__(self, resourceType = None, resourceId = None, id = "timetable", **kwargs):
         super().__init__(**kwargs)
+
+        self.id = id
 
         self.columns = []
         self.lessons = []
@@ -175,16 +177,13 @@ class Timetable(Gtk.Box):
         return True
 
     def enable_bindings(self, parent):
-        self.initTimetable(parent)
-
-    def initTimetable(self, parent):
         self.shared = parent.shared
 
         self.window = parent
         try:
             self.jump_to(getDateTime())
         except:
-            raise
+            pass
 
     def next(self, data=None):
         self.startdate += datetime.timedelta(days=7)
