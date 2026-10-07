@@ -187,7 +187,7 @@ def addStarredTimetables(window):
             "data": pageData,
             "widget": widget,
             "name": id,
-            "icon": "month-symbolic",
+            "icon": "starred-symbolic",
             "title": pageData["name"],
         })
 
