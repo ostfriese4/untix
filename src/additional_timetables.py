@@ -193,6 +193,7 @@ def addStarredTimetables(window):
             "name": id,
             "icon": "starred-symbolic",
             "title": pageData["name"],
+            "prioritize": True,
         })
 
 moduleInfo = {
