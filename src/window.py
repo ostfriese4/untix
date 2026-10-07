@@ -254,3 +254,4 @@ class UntisWindow(Adw.ApplicationWindow):
 
         if not self.shared.session.getOffline():
             self.shared.checked = True
+

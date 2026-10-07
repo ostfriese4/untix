@@ -17,6 +17,12 @@
                         <property name="halign">GTK_ALIGN_CENTER</property>
                       </object>
                     </property>
+                    <child type="end">
+                      <object class="GtkButton" id="create_timetable_button">
+                        <property name="icon-name">list-add-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Create custom timetable</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <property name="content">
@@ -40,4 +46,53 @@
       </object>
     </child>
   </template>
+  <object class="AdwDialog" id="edit_timetable_dialog">
+    <property name="title" translatable="yes">Edit timetable</property>
+    <property name="content-width">500</property>
+    <property name="content-height">1000</property>
+    <child>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar"/>
+        </child>
+        <property name="content">
+          <object class="AdwPreferencesPage">
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwEntryRow" id="recipe_name">
+                    <property name="title" translatable="yes">Name</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup" id="recipe_steps">
+                <property name="separate-rows">true</property>
+                <property name="title" translatable="yes">Components</property>
+                <property name="header-suffix">
+                  <object class="GtkButton" id="add_component">
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Add component</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwButtonRow" id="recipe_save">
+                    <property name="title" translatable="yes">Save</property>
+                    <style>
+                      <class name="suggested-action"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
 </interface>

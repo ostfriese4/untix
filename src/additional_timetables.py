@@ -22,6 +22,9 @@ from gi.repository import Adw
 from gi.repository import GObject
 from .offline_banner import OfflineBanner
 from .timetable import Timetable
+from .custom_timetables import listCustomTimetables, getCustomTimetable, createCustomTimetable, setCustomTimetable, deleteCustomTimetable
+from .dialog import closeOnClickOutside
+from .custom_timetable_builder import CustomTimetableBuilder, confirm
 import os
 import json
 
@@ -32,15 +35,41 @@ class AdditionalTimetablesPage(Gtk.Box):
     offline = Gtk.Template.Child()
     container = Gtk.Template.Child()
     timetable_page = Gtk.Template.Child()
-    view = Gtk.Template.Child()
     main_page = Gtk.Template.Child()
+    view = Gtk.Template.Child()
+    create_timetable_button = Gtk.Template.Child()
+    edit_timetable_dialog = Gtk.Template.Child()
+    recipe_name = Gtk.Template.Child()
+    recipe_steps = Gtk.Template.Child()
+    recipe_save = Gtk.Template.Child()
+    add_component = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.displayed = {}
         self.currentTimetable = None
         self.nested_offline = self.offline
+        self.create_timetable_button.connect("clicked", self.createTimetable)
+        #closeOnClickOutside(self.edit_timetable_dialog) # disabled to prevent data loss
+
+        self.builder = CustomTimetableBuilder(self.recipe_steps, self)
+        self.recipe_save.connect("activated", self.saveRecipe)
+
+        self.currentId = None
         self.isDisplayed = False
+
+    def saveRecipe(self, *args):
+        id = self.currentId
+        recipe = self.builder.save()
+        timetable = {
+            "id": id,
+            "recipe": recipe,
+            "type": "CUSTOM",
+            "name": self.recipe_name.get_text(),
+        }
+        setCustomTimetable(id, timetable)
+        self.edit_timetable_dialog.close()
+        self.display()
 
     def enable_bindings(self, parent):
         def on_visible(*args):
@@ -73,6 +102,36 @@ class AdditionalTimetablesPage(Gtk.Box):
             self.currentTimetable.refresh()
         self.display()
 
+    def editTimetable(self, row, id):
+        self.currentId = id
+        self.edit_timetable_dialog.present(self.parent)
+        data = getCustomTimetable(id)
+        self.recipe_name.set_text(data["name"])
+
+        self.builder.loadRecipe(data["recipe"])
+
+    def deleteTimetable(self, row, id):
+        data = getCustomTimetable(id)
+        title = _("Dou you really want to delete the timetable '%s'?")
+        title = title.replace("%s", data["name"])
+
+        def delete():
+            print("Delete timetable", id, data)
+            deleteCustomTimetable(id)
+            self.display()
+
+        confirm(
+            self.parent,
+            title,
+            _("Delete"),
+            _("Cancel"),
+            delete,
+        )
+
+    def createTimetable(self, *args):
+        id = createCustomTimetable()
+        self.editTimetable(None, id)
+
     def isStarred(self, timetable):
         all = getStarredTimetables(self.shared)
         for i in all:
@@ -102,7 +161,9 @@ class AdditionalTimetablesPage(Gtk.Box):
 
     def display(self):
         self.isDisplayed = True
-        timetables = self.shared.session.getAvailableTimetables()
+
+        timetables = listCustomTimetables()
+        timetables += self.shared.session.getAvailableTimetables()
 
         for section in self.displayed:
             section = self.displayed[section]
@@ -119,7 +180,21 @@ class AdditionalTimetablesPage(Gtk.Box):
             row.add_suffix(star_button)
             self.updateStarButton(star_button, timetable)
 
-            if not timetable["name"] in self.displayed:
+            if timetable["type"] == "CUSTOM":
+                editButton = Gtk.Button()
+                editButton.set_icon_name("document-edit-symbolic")
+                editButton.set_tooltip_text(_("Edit timetable"))
+                editButton.connect("clicked", self.editTimetable, timetable["id"])
+                row.add_suffix(editButton)
+
+                deleteButton = Gtk.Button()
+                deleteButton.set_icon_name("user-trash-symbolic")
+                deleteButton.set_tooltip_text(_("Delete timetable"))
+                deleteButton.connect("clicked", self.deleteTimetable, timetable["id"])
+                deleteButton.add_css_class("destructive-action")
+                row.add_suffix(deleteButton)
+
+            if not timetable["type"] in self.displayed:
                 title = ""
                 match timetable["type"]:
                     case "STUDENT":
@@ -130,12 +205,14 @@ class AdditionalTimetablesPage(Gtk.Box):
                         title = _("Classes")
                     case "ROOM":
                         title = _("Rooms")
+                    case "CUSTOM":
+                        title = _("Custom timetables")
 
                 section = Adw.PreferencesGroup(title = title)
                 self.container.add(section)
-                self.displayed[timetable["name"]] = section
+                self.displayed[timetable["type"]] = section
             else:
-                section = self.displayed[timetable["name"]]
+                section = self.displayed[timetable["type"]]
 
             section.add(row)
 

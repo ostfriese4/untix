@@ -28,6 +28,8 @@ untix_sources = [
   'colors.py',
   'credentials.py',
   'create_homework.py',
+  'custom_timetable_builder.py',
+  'custom_timetables.py',
   'dialog.py',
   'external_page.py',
   'holiday.py',

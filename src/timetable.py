@@ -30,6 +30,7 @@ from .holiday import Holiday
 from .offline_banner import OfflineBanner
 from .dialog import closeOnClickOutside
 from .api import getDateTime, id as appId
+from .custom_timetables import buildCustomTimetable
 import cairo
 import datetime
 import math
@@ -203,7 +204,10 @@ class Timetable(Gtk.Box):
         self.displayHomeworks(homeworks)
 
     def getTimetable(self, start, end, mode="normal"):
-        return self.shared.session.getTimetable(self.resourceType, self.resourceId, start, end, mode=mode)
+        if self.resourceType == "CUSTOM":
+            return buildCustomTimetable(self.resourceId, start, end, mode=mode)
+        else:
+            return self.shared.session.getTimetable(self.resourceType, self.resourceId, start, end, mode=mode)
 
     def prefetch(self):
         def code():
@@ -489,6 +493,14 @@ class Timetable(Gtk.Box):
                 layout = DayLayout(self.start, self.end)
                 dayBox.append(layout)
                 for lesson in day:
+                    if lesson["end"] > self.end:
+                        self.end = lesson["end"]
+                        for column in self.columns:
+                            column.set_size_request(-1, self.end-self.start)
+                    if lesson["start"] < self.start:
+                        self.start = lesson["start"]
+                        for column in self.columns:
+                            column.set_size_request(-1, self.end-self.start)
                     block = Lesson(lesson, self, now)
                     layout.add(block)
                     self.lessons.append((layout, block, lesson))
