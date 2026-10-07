@@ -80,20 +80,19 @@ class AbsencesPage(Gtk.Box):
 
         parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
-        self.page = parent.absences_page
+        self.parent = parent
 
-        try:
-            absences = self.shared.session.getAbsences()
-            self.count(absences)
-        except:
-            pass
+    def onAdded(self):
+        absences = self.shared.session.getAbsences()
+        self.count(absences)
 
     def count(self, absences):
         count = 0
         for absence in absences:
             if not absence["isExcused"]:
                 count += 1
-        self.page.set_badge_number(count)
+        page = self.parent.main_view_stack.get_page(self)
+        page.set_badge_number(count)
         print(count, "absences")
 
     def shouldHide(self):

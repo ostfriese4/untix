@@ -47,66 +47,6 @@
             <child>
               <object class="AdwViewStack" id="main_view_stack">
                 <property name="enable-transitions">True</property>
-                <child>
-                  <object class="AdwViewStackPage">
-                    <property name="name">timetable</property>
-                    <property name="title" translatable="yes">My timetable</property>
-                    <property name="icon-name">month-symbolic</property>
-                    <property name="child">
-                      <object class="Timetable" id="timetable"></object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwViewStackPage">
-                    <property name="name">additional_timetables</property>
-                    <property name="title" translatable="yes">All timetables</property>
-                    <property name="icon-name">month-symbolic</property>
-                    <property name="child">
-                      <object class="AdditionalTimetablesPage" id="additional_timetables"></object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwViewStackPage" id="homework_page">
-                    <property name="name">homework</property>
-                    <property name="title" translatable="yes">Homework</property>
-                    <property name="icon-name">agenda-symbolic</property>
-                    <property name="child">
-                      <object class="HomeworkList" id="homework"></object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwViewStackPage">
-                    <property name="name">teachers</property>
-                    <property name="title" translatable="yes">Teachers</property>
-                    <property name="icon-name">system-users-symbolic</property>
-                    <property name="child">
-                      <object class="TeacherPage" id="teachers"></object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwViewStackPage" id="messages_page">
-                    <property name="name">messages</property>
-                    <property name="title" translatable="yes">Messages</property>
-                    <property name="icon-name">mail-unread-symbolic</property>
-                    <property name="child">
-                      <object class="MessagesPage" id="messages"></object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwViewStackPage" id="absences_page">
-                    <property name="name">absences</property>
-                    <property name="title" translatable="yes">Absences</property>
-                    <property name="icon-name">appointment-soon-symbolic</property>
-                    <property name="child">
-                      <object class="AbsencesPage" id="absences"></object>
-                    </property>
-                  </object>
-                </child>
               </object>
             </child>
           </object>

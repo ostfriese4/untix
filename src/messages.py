@@ -188,8 +188,9 @@ class MessagesPage(Gtk.Box):
 
         parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
+        self.parent = parent
 
-        self.page = parent.messages_page
+    def onAdded(self):
         self.countUnread()
 
     def shouldHide(self):
@@ -213,7 +214,8 @@ class MessagesPage(Gtk.Box):
         except:
             count = 0
             print("could not count unread messages")
-        self.page.set_badge_number(count)
+        page = self.parent.main_view_stack.get_page(self)
+        page.set_badge_number(count)
 
     def next(self, *args):
         self.date += datetime.timedelta(days=1)

@@ -39,24 +39,66 @@ from gi.repository import Gio
 class UntisWindow(Adw.ApplicationWindow):
     __gtype_name__ = "UntisWindow"
 
-    timetable = Gtk.Template.Child()
-    absences = Gtk.Template.Child()
-    absences_page = Gtk.Template.Child()
-    additional_timetables = Gtk.Template.Child()
-    homework = Gtk.Template.Child()
-    homework_page = Gtk.Template.Child()
     main_view_stack = Gtk.Template.Child()
     sidebar_breakpoint = Gtk.Template.Child()
     split_view = Gtk.Template.Child()
     sidebar = Gtk.Template.Child()
-    teachers = Gtk.Template.Child()
-    messages = Gtk.Template.Child()
-    messages_page = Gtk.Template.Child()
 
     def __init__(self, shared, **kwargs):
         super().__init__(**kwargs)
 
-        self.pages = []
+        self.absences = AbsencesPage()
+        self.additional_timetables = AdditionalTimetablesPage()
+        self.homework = HomeworkList()
+        self.messages = MessagesPage()
+        self.teachers = TeacherPage()
+        self.timetable = Timetable()
+
+        self.pages = [
+            {
+                "group": _("Timetables"),
+                "widget": self.timetable,
+                "name": "timetable",
+                "title": _("My timetable"),
+                "icon": "month-symbolic",
+            },
+            {
+                "group": _("Timetables"),
+                "widget": self.additional_timetables,
+                "name": "additional_timetables",
+                "title": _("All timetables"),
+                "icon": "month-symbolic",
+            },
+            {
+                "group": _("Modules"),
+                "widget": self.homework,
+                "name": "homework",
+                "title": _("Homework"),
+                "icon": "agenda-symbolic",
+            },
+            {
+                "group": _("Modules"),
+                "widget": self.absences,
+                "name": "absences",
+                "title": _("Absences"),
+                "icon": "appointment-soon-symbolic",
+            },
+            {
+                "group": _("Modules"),
+                "widget": self.messages,
+                "name": "messages",
+                "title": _("Messages"),
+                "icon": "mail-unread-symbolic",
+            },
+            {
+                "group": _("Modules"),
+                "widget": self.teachers,
+                "name": "teachers",
+                "title": _("Teachers"),
+                "icon": "system-users-symbolic",
+            },
+        ]
+        self.dynamicPages = []
         self.hiddenPages = []
 
         self.shared = shared
@@ -78,20 +120,22 @@ class UntisWindow(Adw.ApplicationWindow):
 
         self.settings = Gio.Settings(schema_id=appId)
         self.settings.connect(
-            "changed::hide-unsupported-features", lambda *args: self.showHideViews()
+            "changed::hide-unsupported-features", lambda *args: self.rebuildSidebar()
         )
 
         self.sidebar.connect("activated", lambda *args: self.split_view.set_show_content(True))
 
         def renameWindow(*args):
             child = self.main_view_stack.get_visible_child()
-            page = self.main_view_stack.get_page(child)
-            title = page.get_title()
-            self.set_title(title)
+            if child is not None:
+                page = self.main_view_stack.get_page(child)
+                title = page.get_title()
+                self.set_title(title)
+            else:
+                self.set_title(_("Untix"))
         renameWindow()
         self.main_view_stack.connect("notify::visible-child-name", renameWindow)
 
-        GLib.idle_add(self.addExternalPages)
         GLib.idle_add(self.showHideViews)
         GLib.idle_add(self.updateOfflineBanners)
 
@@ -116,70 +160,110 @@ class UntisWindow(Adw.ApplicationWindow):
         for banner in offline_banners:
             banner.update(offline, last)
 
-    def hidePage(self, name):
-        if not self.settings.get_boolean("hide-unsupported-features"):
-            return self.showPage(name)
-        if not name in self.hiddenPages:
-            page = self.main_view_stack.get_child_by_name(name)
+    def rebuildSidebar(self):
+        model = self.main_view_stack.get_pages()
+        visiblePage = self.main_view_stack.get_visible_child()
+        visiblePages = []
+        for i in range(model.get_n_items()):
+            page = model.get_object(i)
+            visiblePages.append(page.get_child())
+        for page in visiblePages:
             self.main_view_stack.remove(page)
-            self.hiddenPages.append(name)
-            print("hide page",name)
+
+        allPages = self.pages + self.dynamicPages
+        for page in allPages.copy():
+            if page["widget"] in self.hiddenPages:
+                allPages.remove(page)
+
+        groups = {}
+        for page in allPages:
+            group = page["group"]
+            if group not in groups:
+                groups[group] = []
+            groups[group].append(page)
+
+        for group in groups:
+            first = True
+            for p in groups[group]:
+                page = self.main_view_stack.add(p["widget"])
+                page.set_title(p["title"])
+                page.set_name(p["name"])
+                page.set_icon_name(p["icon"])
+                if first:
+                    first = False
+                    page.set_starts_section(True)
+                    page.set_section_title(group)
+                if p["widget"] not in visiblePages:
+                    try:
+                        GLib.idle_add(p["widget"].onAdded)
+                    except Exception:
+                        print(f"page {p["name"]} does not support onAdded")
+
+        if visiblePage in allPages:
+            self.main_view_stack.set_visible_child(visiblePage)
+
+    def hidePage(self, page):
+        if not page in self.hiddenPages:
+            self.hiddenPages.append(page)
 
     def shouldViewHide(self, name):
         show = name in self.shared.session.getPermissions()["views"]
         return not show
 
-    def showPage(self, name):
-        if name in self.hiddenPages:
-            page = self.main_view_stack.get_child_by_name(name)
-            self.main_view_stack.append(page)
-            self.hiddenPages.remove(name)
-            print("show page",name)
+    def showPage(self, page):
+        if page in self.hiddenPages:
+            self.hiddenPages.remove(page)
 
     def showHideViews(self):
         if self.messages.shouldHide():
-            self.hidePage("messages")
+            self.hidePage(self.messages)
         else:
-            self.showPage("messages")
+            self.showPage(self.messages)
 
         if self.absences.shouldHide():
-            self.hidePage("absences")
+            self.hidePage(self.absences)
         else:
-            self.showPage("absences")
+            self.showPage(self.absences)
 
         if self.teachers.shouldHide():
-            self.hidePage("teachers")
+            self.hidePage(self.teachers)
         else:
-            self.showPage("teachers")
+            self.showPage(self.teachers)
 
         if self.additional_timetables.shouldHide():
-            self.hidePage("additional_timetables")
+            self.hidePage(self.additional_timetables)
         else:
-            self.showPage("additional_timetables")
+            self.showPage(self.additional_timetables)
+
+        self.addExternalPages()
+        self.rebuildSidebar()
 
     def addExternalPages(self):
-        for page in self.pages:
-            self.main_view_stack.remove(page)
-        self.pages.clear()
+        groupName = _("External")
 
-        first = True
-        for pageData in self.shared.session.getMenu():
-            id = "external" + str(len(self.pages))
+        needed = self.shared.session.getMenu()
+
+        for page in self.dynamicPages:
+            if page["group"] == _("External"):
+                if page["data"] in needed:
+                    needed.remove(page["data"])
+                else:
+                    self.dynamicPages.remove(page)
+
+        for pageData in needed:
+            id = "external" + pageData["name"] + pageData["redirectUrl"]
+
             content = ExternalPage(pageData, id)
-
-            page = self.main_view_stack.add(content)
-            page.set_title(pageData["name"])
-            page.set_name(id)
-            page.set_icon_name("globe-alt-symbolic")
-
-            if first:
-                first = False
-                page.set_starts_section(True)
-                #page.set_section_title(_("External services"))
-
             content.enable_bindings(self)
 
-            self.pages.append(content)
+            self.dynamicPages.append({
+                "group": groupName,
+                "data": pageData,
+                "widget": content,
+                "name": id,
+                "icon": "globe-alt-symbolic",
+                "title": pageData["name"],
+            })
 
     def homeworksChanged(self):
         # keep the homework page and the indicators in the timetable in
@@ -206,7 +290,6 @@ class UntisWindow(Adw.ApplicationWindow):
         except:
             pass
         self.homework.displayAll()
-        self.addExternalPages()
         self.showHideViews()
 
     def checkCredentials(self):

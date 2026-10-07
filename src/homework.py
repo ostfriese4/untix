@@ -49,15 +49,14 @@ class HomeworkList(Gtk.Box):
 
         parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
+        self.parent = parent
 
-        self.page = parent.homework_page
-        try:
-            self.displayAll()
-        except:
-            pass
+    def onAdded(self):
+        self.displayAll()
 
     def set_number(self, unfinished):
-        self.page.set_badge_number(unfinished)
+        page = self.parent.main_view_stack.get_page(self)
+        page.set_badge_number(unfinished)
         self.undone_page.set_badge_number(unfinished)
         if unfinished == 0:
             self.empty_undone.set_visible(True)
