@@ -151,9 +151,9 @@ class UntisWindow(Adw.ApplicationWindow):
         for group in groups:
             first = True
             for page in groups[group].copy():
-                if "prioritize" in page and page["prioritize"]:
+                if not "prioritize" in page or ("prioritize" in page and not page["prioritize"]):
                     groups[group].remove(page)
-                    groups[group].insert(0, page)
+                    groups[group].append(page)
             for p in groups[group]:
                 page = self.main_view_stack.add(p["widget"])
                 page.set_title(p["title"])
