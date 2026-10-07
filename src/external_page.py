@@ -60,7 +60,7 @@ class ExternalPage(Gtk.Box):
         self.home_button.connect("clicked", home)
 
     def refresh(self, reason):
-        if reason = "open":
+        if reason == "open":
             if not self.loaded:
                 self.load()
                 self.loaded = True
@@ -128,7 +128,6 @@ class ExternalPage(Gtk.Box):
 
     def enable_bindings(self, parent):
         self.shared = parent.shared
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
 
 def addExternalPages(window):
     groupName = _("External")
