@@ -26,6 +26,7 @@ from gi.repository import Adw
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import Gio
+import  traceback
 
 
 @Gtk.Template(resource_path="/page/codeberg/ostfriese4/Untis/window.ui")
@@ -91,7 +92,7 @@ class UntisWindow(Adw.ApplicationWindow):
                 providers = info["pageProviders"]
                 self.pageProviders += providers
         except Exception:
-            print("failed to load module", name)
+            traceback.print_exc()
 
     def loadModules(self):
         for name in [
@@ -190,7 +191,7 @@ class UntisWindow(Adw.ApplicationWindow):
                 hide = page["widget"].shouldHide()
             except Exception:
                 hide = False
-                print("failed to run shouldHide() of page", page["name"])
+                traceback.print_exc()
             if hide:
                 self.hidePage(page)
             else:
@@ -201,7 +202,7 @@ class UntisWindow(Adw.ApplicationWindow):
             try:
                 code(self)
             except Exception:
-                print("failed to run page provider", provider["name"])
+                traceback.print_exc()
 
         self.rebuildSidebar()
 
