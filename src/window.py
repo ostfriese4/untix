@@ -46,6 +46,7 @@ class UntisWindow(Adw.ApplicationWindow):
         self.pageProviders = []
 
         self.shared = shared
+        self.shared.window = self
         self.login_window = LoginWindow(self)
         self.homeworkEditWindow = HomeworkEditWindow(self)
         self.profiles_window = ProfilesWindow(self)
@@ -164,8 +165,9 @@ class UntisWindow(Adw.ApplicationWindow):
                     except Exception:
                         print(f"page {p["name"]} does not support onAdded")
 
-        if visiblePage in allPages:
-            self.main_view_stack.set_visible_child(visiblePage)
+        for page in allPages:
+            if page["widget"] == visiblePage:
+                self.main_view_stack.set_visible_child(visiblePage)
         self.updateOfflineBanners()
 
     def hidePage(self, page):
