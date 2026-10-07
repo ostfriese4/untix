@@ -205,10 +205,7 @@ class Timetable(Gtk.Box):
         self.displayHomeworks(homeworks)
 
     def getTimetable(self, start, end, mode="normal"):
-        if self.resourceType:
-            return self.shared.session.getTimetable(self.resourceType, self.resourceId, start, end, mode=mode)
-        else:
-            return self.shared.session.getOwnTimetable(start, end, mode=mode)
+        return self.shared.session.getTimetable(self.resourceType, self.resourceId, start, end, mode=mode)
 
     def prefetch(self):
         def code():
@@ -504,15 +501,3 @@ class Timetable(Gtk.Box):
 
         if not dontClose and self.information_window.lesson is not None:
             self.information_window.close()
-
-moduleInfo = {
-    "staticPages": [
-        {
-            "group": _("Timetables"),
-            "widget": Timetable(),
-            "name": "timetable",
-            "title": _("My timetable"),
-            "icon": "month-symbolic",
-        }
-    ]
-}

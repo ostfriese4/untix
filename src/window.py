@@ -94,13 +94,12 @@ class UntisWindow(Adw.ApplicationWindow):
 
     def loadModules(self):
         for name in [
-            "timetable",
+            "additional_timetables",
             "messages",
             "absences",
             "teachers",
-            "additional_timetables",
-            "external_page",
             "homework",
+            "external_page",
         ]:
             self.loadModule(name)
         self.showHideViews()
@@ -168,6 +167,8 @@ class UntisWindow(Adw.ApplicationWindow):
         for page in allPages:
             if page["widget"] == visiblePage:
                 self.main_view_stack.set_visible_child(visiblePage)
+        if visiblePage != self.main_view_stack.get_visible_child():
+            self.refreshPage()
         self.updateOfflineBanners()
 
     def hidePage(self, page):
@@ -213,14 +214,17 @@ class UntisWindow(Adw.ApplicationWindow):
             if additional.currentTimetable is not None:
                 additional.currentTimetable.refreshHomeworks()
 
-    def refresh(self):
-        self.shared.session.refresh()
+    def refreshPage(self):
         try:
             page = self.main_view_stack.get_visible_child()
             page.refresh()
         except Exception:
             print("refresh not implemented by page", self.main_view_stack.get_visible_child_name())
             self.shared.session.getOwnId() # request to update online status
+
+    def refresh(self):
+        self.shared.session.refresh()
+        self.refreshPage()
         self.updateOfflineBanners()
 
     def reload(self):

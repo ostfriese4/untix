@@ -442,16 +442,15 @@ class session:
         return data, gridFormat
 
     def getOwnTimetableId(self):
-        roles = self.getOwnRoles()
-        id = self.getOwnId()
         for timetable in self.getAvailableTimetables():
-            if timetable["id"] == id and timetable["type"] in roles:
+            if self.isOwnTimetable(timetable):
                 return timetable
         print("could not get own timetable")
 
-    def getOwnTimetable(self, start, end, mode="normal"):
-        timetable = self.getOwnTimetableId()
-        return self.getTimetable(timetable["type"], timetable["id"], start, end, mode)
+    def isOwnTimetable(self, timetable):
+        roles = self.getOwnRoles()
+        id = self.getOwnId()
+        return timetable["id"] == id and timetable["type"] in roles
 
     def getAvailableTimetables(self):
         if not self._useCache("availableTimetables"):
@@ -496,6 +495,10 @@ class session:
                         "type": "CLASS",
                         "name": name
                     })
+
+            for timetable in result:
+                if self.isOwnTimetable(timetable):
+                    timetable["name"] = _("My timetable")
 
             self._writeToCache("availableTimetables", result)
             return result

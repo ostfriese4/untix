@@ -150,7 +150,11 @@ def getStarredTimetables(shared):
         with open(path) as file:
             return json.load(file)
     except Exception:
-        return []
+        timetables = []
+        own = shared.session.getOwnTimetableId()
+        if own is not None:
+            timetables.append(own)
+        return timetables
 
 def setStarredTimetables(data, shared):
     path = getStarredTimetablesPath(shared)
