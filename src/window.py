@@ -53,9 +53,6 @@ class UntisWindow(Adw.ApplicationWindow):
         self.profiles_window = ProfilesWindow(self)
 
         # runs after the handlers of the pages, so their data is loaded
-        self.main_view_stack.connect(
-            "notify::visible-child-name", lambda *args: self.updateOfflineBanners()
-        )
         self.main_view_stack.connect("notify::visible-child-name", self.refreshPage)
 
         self.settings = Gio.Settings(schema_id=appId)
@@ -115,16 +112,13 @@ class UntisWindow(Adw.ApplicationWindow):
             print("could not get last online information")
             return
 
-        offline_banners = []
         for i in range(model.get_n_items()):
             page = model.get_item(i)
             try:
-                offline_banners.append(page.get_child().offline)
+                banner = (page.get_child().offline)
+                banner.update(offline, last)
             except Exception:
                 print(f"page {page.get_name()} does not have an offline-banner")
-
-        for banner in offline_banners:
-            banner.update(offline, last)
 
     def rebuildSidebar(self):
         model = self.main_view_stack.get_pages()
@@ -175,7 +169,6 @@ class UntisWindow(Adw.ApplicationWindow):
                 self.main_view_stack.set_visible_child(visiblePage)
         if visiblePage != self.main_view_stack.get_visible_child():
             self.refreshPage()
-        self.updateOfflineBanners()
 
     def hidePage(self, page):
         if not page in self.hiddenPages:
@@ -227,11 +220,11 @@ class UntisWindow(Adw.ApplicationWindow):
         except Exception:
             print("refresh not implemented by page", self.main_view_stack.get_visible_child_name())
             self.shared.session.getOwnId() # request to update online status
+        self.updateOfflineBanners()
 
     def refresh(self):
         self.shared.session.refresh()
         self.refreshPage(reason = "refresh")
-        self.updateOfflineBanners()
 
     def reload(self):
         self.checkCredentials()
