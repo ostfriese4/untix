@@ -208,6 +208,7 @@ class LoginWindow(Adw.Dialog):
         self.pswd_entry.set_text(credentials["password"])
         self.school_entry.set_text(credentials["school"])
         self.server_entry.set_text(credentials["server"])
+        position = 1
         match credentials["type"]:
             case "token":
                 position = 0
