@@ -31,7 +31,6 @@ import datetime
 class HomeworkList(Gtk.Box):
     __gtype_name__ = "HomeworkList"
 
-    show_sidebar_button = Gtk.Template.Child()
     offline = Gtk.Template.Child()
     container_done = Gtk.Template.Child()
     container_undone = Gtk.Template.Child()
@@ -44,29 +43,21 @@ class HomeworkList(Gtk.Box):
         self.scrollTo = None
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == "homework":
-                self.displayAll()
-
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
+        self.parent = parent
 
-        self.page = parent.homework_page
-        try:
-            self.displayAll()
-        except:
-            pass
+    def shouldHide(self):
+        return False
+
+    def refresh(self, reason):
+        self.displayAll()
+
+    def onAdded(self):
+        self.displayAll()
 
     def set_number(self, unfinished):
-        self.page.set_badge_number(unfinished)
+        page = self.parent.main_view_stack.get_page(self)
+        page.set_badge_number(unfinished)
         self.undone_page.set_badge_number(unfinished)
         if unfinished == 0:
             self.empty_undone.set_visible(True)
@@ -132,3 +123,15 @@ class HomeworkList(Gtk.Box):
                 self.days[dayName] = (container, day)
             row = HomeworkRow(homework)
             day.add(row)
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Modules"),
+            "widget": HomeworkList(),
+            "name": "homework",
+            "title": _("Homework"),
+            "icon": "agenda-symbolic",
+        }
+    ]
+}

@@ -1,1 +1,1 @@
-i18n.gettext('untis', preset: 'glib')
+i18n.gettext('untix', preset: 'glib')

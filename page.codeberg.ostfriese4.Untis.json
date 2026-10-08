@@ -3,7 +3,7 @@
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "51",
     "sdk" : "org.gnome.Sdk",
-    "command" : "untis",
+    "command" : "untix",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -43,13 +43,13 @@
             ]
         },
         {
-            "name" : "untis",
+            "name" : "untix",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/jonas/Programme/Builder"
+                    "url" : "."
                 }
             ]
         }

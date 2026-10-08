@@ -1,7 +1,2 @@
-added support for logging in using a QR-Code
-added a setting to merge long exams despite of breaks
-added support for attachments in messages
-added buttons to view news of older days
-fixed own homeworks not showing up in timetable
-make links in messages clickable
-show the subject display name like the mobile app
+added support for custom timetables
+added support for pinning additional timetables

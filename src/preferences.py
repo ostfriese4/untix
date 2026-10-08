@@ -31,6 +31,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
     show_cancelled = Gtk.Template.Child()
     show_time_axis = Gtk.Template.Child()
     ignore_exam_breaks = Gtk.Template.Child()
+    hide_unsupported_features = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -53,6 +54,12 @@ class PreferencesDialog(Adw.PreferencesDialog):
         self.settings.bind(
             "ignore-exam-breaks",
             self.ignore_exam_breaks,
+            "active",
+            Gio.SettingsBindFlags.DEFAULT,
+        )
+        self.settings.bind(
+            "hide-unsupported-features",
+            self.hide_unsupported_features,
             "active",
             Gio.SettingsBindFlags.DEFAULT,
         )

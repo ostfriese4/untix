@@ -35,6 +35,10 @@ class InformationWindow(Adw.Dialog):
         self.info_rows = []
         self.lesson = None
         closeOnClickOutside(self)
+        self.connect("closed", self.onClose)
+
+    def onClose(self, *args):
+        self.lesson = None
 
     def setLesson(self, lesson):
         self.lesson = lesson

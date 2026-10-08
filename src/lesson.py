@@ -178,12 +178,12 @@ class Lesson(Gtk.Overlay):
 
     def markAsHidden(self):
         self.markedAsHidden = True
-        if self.window.information_window.lesson == self.lesson:
-            self.window.information_window.close()
 
     def on_click(self, gesture, data, x, y):
         if not self.markedAsHidden:
             self.window.information_window.setLesson(self.lesson)
+        else:
+            print("don't open", self.lesson)
 
     def clearHomeworks(self):
         self.lesson["homeworks"] = []
