@@ -46,6 +46,9 @@ class HomeworkList(Gtk.Box):
         self.shared = parent.shared
         self.parent = parent
 
+    def shouldHide(self):
+        return False
+
     def refresh(self, reason):
         self.displayAll()
 

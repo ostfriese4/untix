@@ -184,6 +184,9 @@ class Timetable(Gtk.Box):
         self.window = parent
         self.jump_to(getDateTime(), display = False)
 
+    def shouldHide(self):
+        return False
+
     def next(self, data=None, display = True):
         self.startdate += datetime.timedelta(days=7)
         self.enddate += datetime.timedelta(days=7)
