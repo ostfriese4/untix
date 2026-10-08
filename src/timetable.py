@@ -23,6 +23,7 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
+from gi.repository import Pango
 from .homework_api import fetchHomeworks
 from .information import InformationWindow
 from .lesson import Lesson
@@ -475,6 +476,7 @@ class Timetable(Gtk.Box):
             dateLabel = Gtk.Label()
             # Translators: date format in the timetable
             dateLabel.set_label(date.strftime(_("%m/%d/%y")))
+            dateLabel.set_ellipsize(Pango.EllipsizeMode.END)
             dayBox.append(dateLabel)
             dateLabel.add_css_class("day")
             if date.date() == now.date():
