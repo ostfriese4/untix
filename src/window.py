@@ -233,9 +233,9 @@ class UntisWindow(Adw.ApplicationWindow):
         for i in range(model.get_n_items()):
             page = model.get_item(i).get_child()
             try:
-                page.onAdded()
+                GLib.idle_add(page.onAdded)
             except Exception:
-                traceback.print_exc()
+                pass
 
     def checkCredentials(self):
         print("check credentials")
