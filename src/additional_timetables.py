@@ -88,6 +88,7 @@ class AdditionalTimetablesPage(Gtk.Box):
     def openTimetable(self, row, timetable):
         widget = Timetable(timetable["type"], timetable["id"])
         widget.enable_bindings(self.parent)
+        widget.refresh("open")
         self.timetable_page.set_child(widget)
         self.currentTimetable = widget
         widget.offline.update(self.nested_offline.offline, self.nested_offline.last)
