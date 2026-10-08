@@ -228,14 +228,14 @@ class UntisWindow(Adw.ApplicationWindow):
 
     def reload(self):
         self.checkCredentials()
-        self.main_view_stack.set_visible_child_name("timetable")
-        self.timetable.loadData()
-        try:
-            self.shared.session.getHomeworks()
-        except:
-            pass
-        self.homework.displayAll()
         self.showHideViews()
+        model = self.main_view_stack.get_pages()
+        for i in range(model.get_n_items()):
+            page = model.get_item(i).get_child()
+            try:
+                page.onAdded()
+            except Exception:
+                traceback.print_exc()
 
     def checkCredentials(self):
         print("check credentials")
