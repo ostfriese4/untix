@@ -85,8 +85,7 @@ class InformationWindow(Adw.Dialog):
             + ")"
         )
 
-        if lesson["homeworks"] != []:
-            homeworks = lesson["homeworks"]
+        if (homeworks := lesson["homeworks"]) != []:
             data = {}
             i = 0
             for homework in homeworks:

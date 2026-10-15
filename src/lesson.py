@@ -119,10 +119,10 @@ class Lesson(Gtk.Overlay):
         stripe = Gtk.Box()
         stripe.add_css_class("colorstripe")
         stripe.set_size_request(10, -1)
-        if self.lesson["color"].startswith("#"):  # color from WebUntis
-            stripe.add_css_class(serverColorClass(self.lesson["color"]))
+        if (lessonColor := self.lesson["color"]).startswith("#"):  # color from WebUntis
+            stripe.add_css_class(serverColorClass(lessonColor))
         else:
-            stripe.add_css_class(self.lesson["color"])
+            stripe.add_css_class(lessonColor)
         self.content_box.append(stripe)
 
         labels = [self.subject_label, self.teacher_label, self.room_label]
