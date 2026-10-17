@@ -32,7 +32,6 @@ import os
 class ExternalPage(Gtk.Box):
     __gtype_name__ = 'ExternalPage'
 
-    show_sidebar_button = Gtk.Template.Child()
     open_button = Gtk.Template.Child()
     back_button = Gtk.Template.Child()
     next_button = Gtk.Template.Child()
@@ -60,8 +59,13 @@ class ExternalPage(Gtk.Box):
             self.webview.load_uri(self.data["redirectUrl"])
         self.home_button.connect("clicked", home)
 
-    def refresh(self):
-        self.webview.reload()
+    def refresh(self, reason):
+        if reason == "open":
+            if not self.loaded:
+                self.load()
+                self.loaded = True
+        else:
+            self.webview.reload()
 
     def open(self, data):
         Gio.AppInfo.launch_default_for_uri(self.webview.get_uri(), None)
@@ -124,16 +128,39 @@ class ExternalPage(Gtk.Box):
 
     def enable_bindings(self, parent):
         self.shared = parent.shared
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
 
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == self.id:
-                if not self.loaded:
-                    GLib.idle_add(self.load)
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
+def addExternalPages(window):
+    groupName = _("External")
+
+    needed = window.shared.session.getMenu()
+
+    for page in window.dynamicPages:
+        if page["group"] == _("External"):
+            if page["data"] in needed:
+                needed.remove(page["data"])
+            else:
+                window.dynamicPages.remove(page)
+
+    for pageData in needed:
+        id = "external" + pageData["name"] + pageData["redirectUrl"]
+
+        content = ExternalPage(pageData, id)
+        content.enable_bindings(window)
+
+        window.dynamicPages.append({
+            "group": groupName,
+            "data": pageData,
+            "widget": content,
+            "name": id,
+            "icon": "globe-alt-symbolic",
+            "title": pageData["name"],
+        })
+
+moduleInfo = {
+    "pageProviders": [
+        {
+            "name": "external-pages",
+            "code": addExternalPages
+        }
+    ]
+}

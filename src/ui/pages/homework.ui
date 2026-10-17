@@ -19,12 +19,6 @@
                 <property name="tooltip-text" translatable="yes">Create a new homework</property>
               </object>
             </child>
-            <child type="start">
-              <object class="GtkToggleButton" id="show_sidebar_button">
-                <property name="icon-name">adw-sidebar-symbolic</property>
-                <property name="visible">False</property>
-              </object>
-            </child>
           </object>
         </child>
         <child type="top">

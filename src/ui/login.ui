@@ -5,96 +5,167 @@
   <template class="LoginWindow" parent="AdwDialog">
     <property name="title" translatable="yes">Login</property>
     <property name="content-width">400</property>
+    <property name="content-height">600</property>
     <property name="can-close">True</property>
     <child>
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar">
-            <child type="end">
-              <object class="GtkButton" id="scan_qr_button">
-                <property name="tooltip-text" translatable="yes">Login using a QR-Code</property>
-                <property name="icon-name">qr-code-scanner-symbolic</property>
-              </object>
-          </child>
-          </object>
-        </child>
-        <property name="content">
-          <object class="AdwToastOverlay" id="toast_overlay">
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <property name="child">
+          <object class="AdwNavigationView" id="login_pages">
             <child>
-              <object class="AdwPreferencesPage">
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="AdwEntryRow" id="profile_entry">
-                        <property name="title" translatable="yes">Profile name</property>
-                      </object>
+
+
+              <object class="AdwNavigationPage" id="first_login_page">
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar"/>
                     </child>
+                    <property name="content">
+                      <object class="AdwPreferencesPage">
+                        <child>
+                          <object class="AdwPreferencesGroup">
+                            <property name="title" translatable="yes">How do you want to log in?</property>
+                            <property name="separate-rows">true</property>
+                            <child>
+                              <object class="AdwButtonRow" id="scan_qr_button">
+                                <property name="title" translatable="yes">Login using a QR-Code</property>
+                                <property name="start-icon-name">qr-code-scanner-symbolic</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwButtonRow" id="use_credentials_button">
+                                <property name="title" translatable="yes">Login using credentials</property>
+                                <property name="start-icon-name">key-symbolic</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
                   </object>
-                </child>
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="AdwButtonRow" id="sso_info_button">
-                        <property name="title" translatable="yes">I usually log in using a third-party service</property>
-                        <property name="start-icon-name">dialog-information-symbolic</property>
-                      </object>
+                </property>
+              </object>
+
+
+              <object class="AdwNavigationPage" id="scan_qr_page">
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar"/>
                     </child>
-                    <child>
-                      <object class="AdwButtonRow" id="search_button">
-                        <property name="title" translatable="yes">Search school</property>
-                        <property name="start-icon-name">system-search</property>
-                      </object>
-                    </child>
+                    <property name="content">
+                      <object class="QrScanner" id="qr_scanner"/>
+                    </property>
                   </object>
-                </child>
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="AdwEntryRow" id="server_entry">
-                        <property name="title" translatable="yes">Server-URL</property>
-                      </object>
+                </property>
+              </object>
+
+
+              <object class="AdwNavigationPage" id="main_login_page">
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar"/>
                     </child>
-                    <child>
-                      <object class="AdwEntryRow" id="school_entry">
-                        <property name="title" translatable="yes">School</property>
+                    <property name="content">
+                      <object class="AdwPreferencesPage">
+                        <child>
+                          <object class="AdwPreferencesGroup">
+                            <child>
+                              <object class="AdwEntryRow" id="profile_entry">
+                                <property name="title" translatable="yes">Profile name</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwPreferencesGroup">
+                            <child>
+                              <object class="AdwEntryRow" id="server_entry">
+                                <property name="title" translatable="yes">Server-URL</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwEntryRow" id="school_entry">
+                                <property name="title" translatable="yes">School</property>
+                                <child type="suffix">
+                                  <object class="GtkButton" id="search_button">
+                                    <property name="icon-name">system-search-symbolic</property>
+                                    <property name="tooltip-text" translatable="yes">Search schools</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwEntryRow" id="usr_entry">
+                                <property name="title" translatable="yes">Username</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwComboRow" id="method">
+                                <property name="title" translatable="yes">Authentication method</property>
+                                <property name="model">
+                                  <object class="GtkStringList">
+                                    <items>
+                                      <item translatable="yes">Token</item>
+                                      <item translatable="yes">Password</item>
+                                    </items>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwPasswordEntryRow" id="pswd_entry">
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwPreferencesGroup">
+                            <child>
+                              <object class="AdwButtonRow" id="login_button">
+                                <property name="title" translatable="yes">Save</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
-                    </child>
-                    <child>
-                      <object class="AdwEntryRow" id="usr_entry">
-                        <property name="title" translatable="yes">Username</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwComboRow" id="method">
-                        <property name="title" translatable="yes">Authentication method</property>
-                        <property name="model">
-                          <object class="GtkStringList">
-                            <items>
-                              <item translatable="yes">Token</item>
-                              <item translatable="yes">Password</item>
-                            </items>
+                    </property>
+                  </object>
+                </property>
+              </object>
+
+
+              <object class="AdwNavigationPage" id="search_page">
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar">
+                        <property name="title-widget">
+                          <object class="AdwPreferencesGroup">
+                            <child>
+                              <object class="AdwEntryRow" id="search_entry">
+                                <property name="title" translatable="yes">School</property>
+                              </object>
+                            </child>
                           </object>
                         </property>
                       </object>
                     </child>
-                    <child>
-                      <object class="AdwPasswordEntryRow" id="pswd_entry">
+                    <property name="content">
+                      <object class="AdwPreferencesPage">
+                        <child>
+                          <object class="AdwPreferencesGroup" id="result_list">
+                            <property name="height-request">250</property>
+                          </object>
+                        </child>
                       </object>
-                    </child>
+                    </property>
                   </object>
-                </child>
-
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="AdwButtonRow" id="login_button">
-                        <property name="title" translatable="yes">Save</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-
+                </property>
               </object>
+
+
             </child>
           </object>
         </property>
@@ -102,78 +173,4 @@
     </child>
   </template>
 
-  <object class="AdwDialog" id="search_window">
-    <property name="title" translatable="yes">Search school</property>
-    <property name="content-width">350</property>
-    <child>
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar">
-            <property name="title-widget">
-              <object class="AdwPreferencesGroup">
-                <child>
-                  <object class="AdwEntryRow" id="search_entry">
-                    <property name="title" translatable="yes">School</property>
-                  </object>
-                </child>
-              </object>
-            </property>
-          </object>
-        </child>
-        <property name="content">
-          <object class="AdwPreferencesPage">
-            <child>
-              <object class="AdwPreferencesGroup" id="result_list">
-                <property name="height-request">250</property>
-              </object>
-            </child>
-          </object>
-        </property>
-      </object>
-    </child>
-  </object>
-
-  <object class="AdwDialog" id="sso_info_window">
-    <property name="title" translatable="yes">Help</property>
-    <property name="content-width">350</property>
-    <child>
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar"/>
-        </child>
-        <property name="content">
-          <object class="AdwPreferencesPage">
-            <child>
-              <object class="AdwPreferencesGroup">
-                <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">If you are logging usually logging into WebUntis using a third party sso (e.g. IServ), follow the same steps as for the official app at https://help.untis.at/hc/en-150/articles/16515466619548-How-do-I-log-into-Untis-Mobile-if-my-school-has-set-up-SSO</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </property>
-      </object>
-    </child>
-  </object>
-
-  <object class="AdwDialog" id="scan_qr_window">
-    <property name="title" translatable="yes">Scan QR-Code</property>
-    <property name="content-width">350</property>
-    <child>
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar"/>
-        </child>
-        <property name="content">
-          <object class="AdwToastOverlay" id="qr_toast_overlay">
-            <child>
-              <object class="QrScanner" id="qr_scanner"/>
-            </child>
-          </object>
-        </property>
-      </object>
-    </child>
-  </object>
 </interface>

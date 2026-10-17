@@ -1,5 +1,5 @@
-project('untis',
-          version: '0.1.0',
+project('untix',
+          version: '5.0.0',
     meson_version: '>= 1.0.0',
   default_options: [ 'warning_level=2', 'werror=false', ],
 )
@@ -14,8 +14,8 @@ subdir('data')
 subdir('src')
 subdir('po')
 
-gnome.compile_resources('untis',
-  'untis.gresource.xml',
+gnome.compile_resources('untix',
+  'untix.gresource.xml',
   gresource_bundle: true,
   install: true,
   source_dir: ['data/resources/icons', 'src/ui', 'src', 'src/ui/pages'],

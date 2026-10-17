@@ -33,8 +33,12 @@
           </object>
         </child>
         <child>
-          <object class="AdwExpanderRow" id="expander">
-            <property name="title" translatable="yes">You have changed this</property>
+          <object class="GtkListBox">
+            <child>
+              <object class="AdwExpanderRow" id="expander">
+                <property name="title" translatable="yes">You have changed this</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

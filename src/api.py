@@ -9,8 +9,8 @@ import binascii
 from pathlib import Path
 from hashlib import md5
 
-version = "4.3.1"
-releaseNotes = "        <p>This is a bugfix release containing minor fixes</p>\n        <ul>\n          <li>fixed refreshing of additional timetables</li>\n          <li>highlight exams</li>\n        </ul>\n        <p>Additionally, exams are highlighted now</p>\n"
+version = "5.0.0"
+releaseNotes = '	<p>This release renames the app to Untix and adds support for loging in using a QR-Code</p>\n	<p>More changes include</p>\n        <ul>\n          <li>added a setting to merge long exams despite of breaks</li>\n          <li>added support for attachments in messages</li>\n          <li>added buttons to view news of older days</li>\n          <li>fixed own homeworks not showing up in timetable</li>\n          <li>make links in messages clickable</li>\n          <li>show the subject display name like the mobile app</li>\n          <li>renamed from "Timetable" to "Untix"</li>\n	  <li>updated to GNOME 51</li>\n        </ul>\n'
 id = "page.codeberg.ostfriese4.Untis"
 useragent = id + " " + version
 
@@ -467,16 +467,15 @@ class session:
         return data, gridFormat
 
     def getOwnTimetableId(self):
-        roles = self.getOwnRoles()
-        id = self.getOwnId()
         for timetable in self.getAvailableTimetables():
-            if timetable["id"] == id and timetable["type"] in roles:
+            if self.isOwnTimetable(timetable):
                 return timetable
         print("could not get own timetable")
 
-    def getOwnTimetable(self, start, end, mode="normal"):
-        timetable = self.getOwnTimetableId()
-        return self.getTimetable(timetable["type"], timetable["id"], start, end, mode)
+    def isOwnTimetable(self, timetable):
+        roles = self.getOwnRoles()
+        id = self.getOwnId()
+        return timetable["id"] == id and timetable["type"] in roles
 
     def getAvailableTimetables(self):
         if not self._useCache("availableTimetables"):
@@ -521,6 +520,10 @@ class session:
                         "type": "CLASS",
                         "name": name
                     })
+
+            for timetable in result:
+                if self.isOwnTimetable(timetable):
+                    timetable["name"] = _("My timetable")
 
             self._writeToCache("availableTimetables", result)
             return result
@@ -599,7 +602,21 @@ class session:
 
         return color
 
-    def analyzeLesson(self, lesson):
+    def getDisplayNames(self, gridEntries):
+        # the grid entries carry the subject names configured in WebUntis (e.g.
+        # an alternate name), search all positions as their layout can change
+        names = {}
+        for entry in gridEntries:
+            for key, labels in entry.items():
+                if not key.startswith("position") or not labels:
+                    continue
+                for label in labels:
+                    for state in (label.get("current"), label.get("removed")):
+                        if state and state.get("type") == "SUBJECT":
+                            names[state.get("shortName")] = state.get("displayName")
+        return names
+
+    def analyzeLesson(self, lesson, displayNames=None):
         rooms = lesson["rooms"]
         old = rooms.copy()
         change = False
@@ -637,6 +654,11 @@ class session:
             else:
                 lesson["subject"] = {"shortName": "???", "longName": _("Unknown")}
 
+        # shown on the lesson block like the mobile app does, the short name
+        # stays untouched as homeworks are matched by it
+        subject = lesson["subject"]
+        subject["displayName"] = (displayNames or {}).get(subject["shortName"]) or subject["shortName"]
+
         lesson["teachers-short"] = self.createList(
             lesson["teachers"], "shortName", False
         )
@@ -653,17 +675,18 @@ class session:
             lesson["color"] = self.getColor(lesson["subject"]["shortName"])
 
         if "original" in lesson:
-            lesson["original"] = self.analyzeLesson(lesson["original"])
+            lesson["original"] = self.analyzeLesson(lesson["original"], displayNames)
 
         return lesson
 
     def analyzeTimetable(self, data, resourceType, resourceId, mode="normal"):
         timetable = []
         for day in data:
+            date = day["date"]
             lessons = []
             timetable.append(lessons)
-            start = day["gridEntries"][0]["duration"]["start"]
-            end = day["gridEntries"][-1]["duration"]["end"]
+            start = date + "T00:00"
+            end = date + "T23:59"
 
             details = self.getLessonDetails(
                 start,
@@ -677,8 +700,9 @@ class session:
                 print("empty lesson")
                 continue
 
+            displayNames = self.getDisplayNames(day["gridEntries"])
             for lesson in details:
-                lessons.append(self.analyzeLesson(lesson))
+                lessons.append(self.analyzeLesson(lesson, displayNames))
         return timetable
 
     def lessonsAreEqual(self, l1, l2):

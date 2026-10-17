@@ -1,5 +1,5 @@
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
-moduledir = pkgdatadir / 'untis'
+moduledir = pkgdatadir / 'untix'
 gnome = import('gnome')
 
 python = import('python')
@@ -11,15 +11,15 @@ conf.set('localedir', get_option('prefix') / get_option('localedir'))
 conf.set('pkgdatadir', pkgdatadir)
 
 configure_file(
-  input: 'untis.in',
-  output: 'untis',
+  input: 'untix.in',
+  output: 'untix',
   configuration: conf,
   install: true,
   install_dir: get_option('bindir'),
   install_mode: 'rwxr-xr-x'
 )
 
-untis_sources = [
+untix_sources = [
   '__init__.py',
   'absences.py',
   'account_settings.py',
@@ -29,6 +29,8 @@ untis_sources = [
   'colors.py',
   'credentials.py',
   'create_homework.py',
+  'custom_timetable_builder.py',
+  'custom_timetables.py',
   'dialog.py',
   'external_page.py',
   'holiday.py',
@@ -49,4 +51,4 @@ untis_sources = [
   'window.py',
 ]
 
-install_data(untis_sources, install_dir: moduledir)
+install_data(untix_sources, install_dir: moduledir)

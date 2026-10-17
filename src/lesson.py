@@ -107,7 +107,8 @@ class Lesson(Gtk.Overlay):
         self.lesson = lesson
         self.window = window
 
-        self.subject_label = Gtk.Label(label=self.lesson["subject"]["shortName"])
+        subject = self.lesson["subject"]
+        self.subject_label = Gtk.Label(label=subject.get("displayName") or subject["shortName"])
         self.subject_label.add_css_class("subject")
         self.teacher_label = Gtk.Label(label=self.lesson["teachers-short"])
         self.room_label = Gtk.Label(label=self.lesson["room"])
@@ -118,10 +119,10 @@ class Lesson(Gtk.Overlay):
         stripe = Gtk.Box()
         stripe.add_css_class("colorstripe")
         stripe.set_size_request(10, -1)
-        if self.lesson["color"].startswith("#"):  # color from WebUntis
-            stripe.add_css_class(serverColorClass(self.lesson["color"]))
+        if (lessonColor := self.lesson["color"]).startswith("#"):  # color from WebUntis
+            stripe.add_css_class(serverColorClass(lessonColor))
         else:
-            stripe.add_css_class(self.lesson["color"])
+            stripe.add_css_class(lessonColor)
         self.content_box.append(stripe)
 
         labels = [self.subject_label, self.teacher_label, self.room_label]
@@ -177,12 +178,12 @@ class Lesson(Gtk.Overlay):
 
     def markAsHidden(self):
         self.markedAsHidden = True
-        if self.window.information_window.lesson == self.lesson:
-            self.window.information_window.close()
 
     def on_click(self, gesture, data, x, y):
         if not self.markedAsHidden:
             self.window.information_window.setLesson(self.lesson)
+        else:
+            print("don't open", self.lesson)
 
     def clearHomeworks(self):
         self.lesson["homeworks"] = []

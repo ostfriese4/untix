@@ -8,6 +8,17 @@
       <object class="AdwPreferencesPage">
         <child>
           <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">General</property>
+            <child>
+              <object class="AdwSwitchRow" id="hide_unsupported_features">
+                <property name="title" translatable="yes">Hide unsupported features</property>
+                <property name="subtitle" translatable="yes">Hide features that are not supported by your server</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Timetable</property>
             <child>
               <object class="AdwSwitchRow" id="show_cancelled">

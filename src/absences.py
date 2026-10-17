@@ -66,7 +66,6 @@ class Absence(Adw.ExpanderRow):
 class AbsencesPage(Gtk.Box):
     __gtype_name__ = "AbsencesPage"
 
-    show_sidebar_button = Gtk.Template.Child()
     offline = Gtk.Template.Child()
     container = Gtk.Template.Child()
 
@@ -75,39 +74,28 @@ class AbsencesPage(Gtk.Box):
         self.displayed = []
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
-        def on_visible(page, pspec):
-            if parent.main_view_stack.get_visible_child_name() == "absences":
-                self.display()
-
-        parent.main_view_stack.connect("notify::visible-child-name", on_visible)
         self.shared = parent.shared
-        self.page = parent.absences_page
+        self.parent = parent
 
-        try:
-            absences = self.shared.session.getAbsences()
-            self.count(absences)
-        except:
-            pass
+    def onAdded(self):
+        absences = self.shared.session.getAbsences()
+        self.count(absences)
 
     def count(self, absences):
         count = 0
         for absence in absences:
             if not absence["isExcused"]:
                 count += 1
-        self.page.set_badge_number(count)
+        page = self.parent.main_view_stack.get_page(self)
+        page.set_badge_number(count)
         print(count, "absences")
 
     def shouldHide(self):
         absences = self.shared.session.getAbsences()
         return absences is None or absences == []
+
+    def refresh(self, reason):
+        self.display()
 
     def display(self):
         absences = self.shared.session.getAbsences()
@@ -121,3 +109,15 @@ class AbsencesPage(Gtk.Box):
             row = Absence(absence)
             self.container.add(row)
             self.displayed.append(row)
+
+moduleInfo = {
+    "staticPages": [
+        {
+            "group": _("Modules"),
+            "widget": AbsencesPage(),
+            "name": "absences",
+            "title": _("Absences"),
+            "icon": "appointment-soon-symbolic",
+        }
+    ]
+}

@@ -31,11 +31,14 @@
     <file preprocess="xml-stripblanks">external-link-symbolic.svg</file>
     <file preprocess="xml-stripblanks">globe-alt-symbolic.svg</file>
     <file preprocess="xml-stripblanks">info-outline-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">key-symbolic.svg</file>
     <file preprocess="xml-stripblanks">mail-unread-symbolic.svg</file>
     <file preprocess="xml-stripblanks">month-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">non-starred-symbolic.svg</file>
     <file preprocess="xml-stripblanks">paper-symbolic.svg</file>
     <file preprocess="xml-stripblanks">preferences-system-symbolic.svg</file>
     <file preprocess="xml-stripblanks">qr-code-scanner-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">starred-symbolic.svg</file>
     <file preprocess="xml-stripblanks">system-users-symbolic.svg</file>
     <file preprocess="xml-stripblanks">xsi-mail-attachment-symbolic.svg</file>
   </gresource>

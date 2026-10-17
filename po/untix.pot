@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the untis package.
+# This file is distributed under the same license as the untix package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: untis\n"
+"Project-Id-Version: untix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 16:23+0200\n"
+"POT-Creation-Date: 2026-10-04 19:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/page.codeberg.ostfriese4.Untis.desktop.in:2
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:7 src/main.py:103
-#: src/ui/preferences.ui:11 src/ui/window.ui:6 src/ui/window.ui:19
-#: src/ui/window.ui:45
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:7
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:14 src/main.py:103
+#: src/ui/preferences.ui:22 src/ui/window.ui:18 src/ui/window.ui:44
 msgid "Timetable"
 msgstr ""
 
@@ -39,63 +39,72 @@ msgid ""
 msgstr ""
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:11
-msgid "Timetable supports"
+msgid ""
+"While it might also work for teachers, this isn't tested and many features "
+"may be missing."
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:13
-msgid "Viewing your timetable"
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:12
+msgid "Supported features are:"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:14
-msgid "Viewing and editing your homework"
-msgstr ""
-
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:15
-msgid "Looking up your teachers"
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:15 src/information.py:95
+#: src/information.py:111 src/ui/window.ui:71
+msgid "Homework"
 msgstr ""
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:16
-msgid "Viewing your messages"
+msgid "Teacher lookup"
 msgstr ""
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:17
-msgid "Viewing your absences"
+msgid "Messages (inbox only)"
 msgstr ""
 
 #: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:18
-msgid "Multiple profiles"
+msgid "Absences (read only)"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:20
-msgid "Some features might not be available at your school"
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:19
+msgid "External services (embedded webpage)"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:24
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:21
+msgid ""
+"Note that depending on your server configuration, not all features will be "
+"available"
+msgstr ""
+
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:25
 msgid "Ostfriese4"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:57
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:58
 msgid "The timetable"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:61
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:62
 msgid "Dialog showing information about a lesson"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:65
+#: data/page.codeberg.ostfriese4.Untis.metainfo.xml.in:66
 msgid "Editing a homework"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:6 src/ui/preferences.ui:15
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:6 src/ui/preferences.ui:26
 msgid "Show cancelled lessons if, there is a replacement"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:10 src/ui/preferences.ui:20
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:10 src/ui/preferences.ui:31
 msgid "Show the time axis"
 msgstr ""
 
-#: data/page.codeberg.ostfriese4.Untis.gschema.xml:14 src/ui/preferences.ui:25
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:14 src/ui/preferences.ui:36
 msgid "Ignore breaks between exams"
+msgstr ""
+
+#: data/page.codeberg.ostfriese4.Untis.gschema.xml:18 src/ui/preferences.ui:14
+msgid "Hide unsupported features"
 msgstr ""
 
 #: src/absences.py:46
@@ -122,7 +131,7 @@ msgstr ""
 msgid "Students"
 msgstr ""
 
-#: src/additional_timetables.py:96 src/ui/window.ui:82
+#: src/additional_timetables.py:96 src/ui/window.ui:81
 #: src/ui/pages/teachers.ui:12
 msgid "Teachers"
 msgstr ""
@@ -139,15 +148,15 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: src/api.py:537 src/api.py:613
+#: src/api.py:537 src/api.py:627
 msgid "Unknown"
 msgstr ""
 
-#: src/api.py:608 src/api.py:611
+#: src/api.py:622 src/api.py:625
 msgid "Event"
 msgstr ""
 
-#: src/api.py:756
+#: src/api.py:777
 msgid "No data"
 msgstr ""
 
@@ -195,59 +204,55 @@ msgstr ""
 msgid "This was originally due on %A %x"
 msgstr ""
 
-#: src/information.py:48 src/information.py:97 src/ui/create_homework.ui:41
+#: src/information.py:52 src/information.py:101 src/ui/create_homework.ui:41
 msgid "Subject"
 msgstr ""
 
-#: src/information.py:49 src/information.py:98
+#: src/information.py:53 src/information.py:102
 msgid "Room"
 msgstr ""
 
-#: src/information.py:50 src/information.py:99
+#: src/information.py:54 src/information.py:103
 msgid "Room description"
 msgstr ""
 
-#: src/information.py:51 src/information.py:100
+#: src/information.py:55 src/information.py:104
 msgid "Teacher"
 msgstr ""
 
-#: src/information.py:53
+#: src/information.py:57
 msgid "Class"
 msgstr ""
 
-#: src/information.py:55
+#: src/information.py:59
 msgid "Substitution"
 msgstr ""
 
-#: src/information.py:57
+#: src/information.py:61
 msgid "Information about this lesson"
 msgstr ""
 
-#: src/information.py:59
+#: src/information.py:63
 msgid "Teaching content"
 msgstr ""
 
-#: src/information.py:61
+#: src/information.py:65
 msgid "Cancelled"
 msgstr ""
 
-#: src/information.py:69
+#: src/information.py:73
 msgid "Duration"
 msgstr ""
 
-#: src/information.py:72
+#: src/information.py:76
 msgid "Minutes"
 msgstr ""
 
-#: src/information.py:91 src/information.py:107 src/ui/window.ui:72
-msgid "Homework"
-msgstr ""
-
-#: src/information.py:95
+#: src/information.py:99
 msgid "Original lesson"
 msgstr ""
 
-#: src/login.py:79
+#: src/login.py:74
 msgid "Invalid QR-Code"
 msgstr ""
 
@@ -267,7 +272,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/login.py:141 src/ui/login.ui:73
+#: src/login.py:141 src/ui/login.ui:110
 msgid "Token"
 msgstr ""
 
@@ -280,19 +285,19 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/messages.py:65 src/ui/create_homework.ui:23
+#: src/messages.py:151 src/ui/create_homework.ui:23
 msgid "Date"
 msgstr ""
 
-#: src/messages.py:74
+#: src/messages.py:160
 msgid "Sender"
 msgstr ""
 
-#: src/messages.py:150
+#: src/messages.py:236
 msgid "News of %m/%d/%Y"
 msgstr ""
 
-#: src/messages.py:175
+#: src/messages.py:261
 msgid "No News for this day"
 msgstr ""
 
@@ -330,12 +335,12 @@ msgstr ""
 msgid "Do you really want to delete this profile?"
 msgstr ""
 
-#: src/timetable.py:417
+#: src/timetable.py:418
 msgid "Week %W"
 msgstr ""
 
 #. Translators: date format in the timetable
-#: src/timetable.py:476
+#: src/timetable.py:477
 msgid "%m/%d/%y"
 msgstr ""
 
@@ -355,7 +360,7 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: src/ui/create_homework.ui:64 src/ui/login.ui:91
+#: src/ui/create_homework.ui:64 src/ui/login.ui:127
 msgid "Save"
 msgstr ""
 
@@ -363,7 +368,7 @@ msgstr ""
 msgid "Mark as completed"
 msgstr ""
 
-#: src/ui/homework_row.ui:37
+#: src/ui/homework_row.ui:39
 msgid "You have changed this"
 msgstr ""
 
@@ -375,63 +380,59 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: src/ui/login.ui:15
+#: src/ui/login.ui:27
+msgid "How do you want to log in?"
+msgstr ""
+
+#: src/ui/login.ui:31
 msgid "Login using a QR-Code"
 msgstr ""
 
-#: src/ui/login.ui:29
+#: src/ui/login.ui:37
+msgid "Login using credentials"
+msgstr ""
+
+#: src/ui/login.ui:76
 msgid "Profile name"
 msgstr ""
 
-#: src/ui/login.ui:38
-msgid "I usually log in using a third-party service"
-msgstr ""
-
-#: src/ui/login.ui:44 src/ui/login.ui:106
-msgid "Search school"
-msgstr ""
-
-#: src/ui/login.ui:54
+#: src/ui/login.ui:85
 msgid "Server-URL"
 msgstr ""
 
-#: src/ui/login.ui:59 src/ui/login.ui:116
+#: src/ui/login.ui:90 src/ui/login.ui:148
 msgid "School"
 msgstr ""
 
-#: src/ui/login.ui:64
+#: src/ui/login.ui:94
+msgid "Search schools"
+msgstr ""
+
+#: src/ui/login.ui:101
 msgid "Username"
 msgstr ""
 
-#: src/ui/login.ui:69
+#: src/ui/login.ui:106
 msgid "Authentication method"
 msgstr ""
 
-#: src/ui/login.ui:74
+#: src/ui/login.ui:111
 msgid "Password"
-msgstr ""
-
-#: src/ui/login.ui:137
-msgid "Help"
-msgstr ""
-
-#: src/ui/login.ui:150
-msgid ""
-"If you are logging usually logging into WebUntis using a third party sso "
-"(e.g. IServ), follow the same steps as for the official app at https://"
-"help.untis.at/hc/en-150/articles/16515466619548-How-do-I-log-into-Untis-"
-"Mobile-if-my-school-has-set-up-SSO"
-msgstr ""
-
-#: src/ui/login.ui:162
-msgid "Scan QR-Code"
 msgstr ""
 
 #: src/ui/offline_banner.ui:9
 msgid "Try again"
 msgstr ""
 
-#: src/ui/preferences.ui:14
+#: src/ui/preferences.ui:11
+msgid "General"
+msgstr ""
+
+#: src/ui/preferences.ui:15
+msgid "Hide features that are not supported by your server"
+msgstr ""
+
+#: src/ui/preferences.ui:25
 msgid "Show all cancelled lessons"
 msgstr ""
 
@@ -482,43 +483,43 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr ""
 
-#: src/ui/window.ui:28
+#: src/ui/window.ui:27
 msgid "Main Menu"
 msgstr ""
 
-#: src/ui/window.ui:52
+#: src/ui/window.ui:51
 msgid "My timetable"
 msgstr ""
 
-#: src/ui/window.ui:62 src/ui/pages/additional_timetables.ui:16
+#: src/ui/window.ui:61 src/ui/pages/additional_timetables.ui:16
 msgid "All timetables"
 msgstr ""
 
-#: src/ui/window.ui:92 src/ui/pages/messages.ui:12 src/ui/pages/messages.ui:59
+#: src/ui/window.ui:91 src/ui/pages/messages.ui:12 src/ui/pages/messages.ui:59
 msgid "Messages"
 msgstr ""
 
-#: src/ui/window.ui:102 src/ui/pages/absences.ui:12
+#: src/ui/window.ui:101 src/ui/pages/absences.ui:12
 msgid "Absences"
 msgstr ""
 
-#: src/ui/window.ui:119
+#: src/ui/window.ui:118
 msgid "_Refresh"
 msgstr ""
 
-#: src/ui/window.ui:123
+#: src/ui/window.ui:122
 msgid "Manage _profiles"
 msgstr ""
 
-#: src/ui/window.ui:127
+#: src/ui/window.ui:126
 msgid "_Preferences"
 msgstr ""
 
-#: src/ui/window.ui:133
+#: src/ui/window.ui:132
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: src/ui/window.ui:137
+#: src/ui/window.ui:136
 msgid "_About Timetable"
 msgstr ""
 

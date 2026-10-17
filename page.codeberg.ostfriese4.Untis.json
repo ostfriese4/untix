@@ -3,7 +3,7 @@
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "51",
     "sdk" : "org.gnome.Sdk",
-    "command" : "untis",
+    "command" : "untix",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -26,30 +26,15 @@
     ],
     "modules" : [
         "pypi.json",
+        "shared-modules/libportal/libportal.json",
         {
-            "name" : "libportal",
-            "buildsystem" : "meson",
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://github.com/flatpak/libportal.git",
-                    "tag" : "0.11.0",
-                    "commit": "fc4d62cfe131e8494c82f597f92b2234d584c367",
-                    "x-checker-data": {
-                        "type": "git",
-                        "tag-pattern": "^([\\d.]+)$"
-                    }
-                }
-            ]
-        },
-        {
-            "name" : "untis",
+            "name" : "untix",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/jonas/Programme/Builder"
+                    "url" : "."
                 }
             ]
         }

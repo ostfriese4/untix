@@ -100,6 +100,6 @@ class Attachment(Adw.ActionRow):
         return path
 
     def getDownloadUrl(self):
-        t = self.data["type"]
-        if t == "storageAttachment":
-            return self.session.getAttachmentStorageUrl(self.data["id"])
+        match self.data["type"]:
+            case "storageAttachment":
+                return self.session.getAttachmentStorageUrl(self.data["id"])

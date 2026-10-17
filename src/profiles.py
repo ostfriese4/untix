@@ -22,6 +22,7 @@ from gi.repository import Adw
 from .credentials import getProfiles, setProfiles, getCredentials
 from .api import session
 from .dialog import closeOnClickOutside
+import traceback
 
 
 class ProfileRow(Adw.ActionRow):
@@ -124,7 +125,7 @@ class ProfilesWindow(Adw.Dialog):
             self.window.shared.session = session(getCredentials(id))
             self.window.reload()
         except:
-            print("switching to", id, "failed")
+            traceback.print_exc()
 
     def editProfile(self, id):
         self.switchProfile(id)

@@ -22,7 +22,6 @@ from gi.repository import Adw
 from gi.repository import GLib
 from .api import session, testCredentials, searchSchool
 from .credentials import getCredentials, setCredentials, setProfiles, getProfiles
-from .dialog import closeOnClickOutside
 from .qr import QrScanner
 
 
@@ -37,20 +36,21 @@ class LoginWindow(Adw.Dialog):
     server_entry = Gtk.Template.Child()
     method = Gtk.Template.Child()
     profile_entry = Gtk.Template.Child()
+    use_credentials_button = Gtk.Template.Child()
 
+    search_page = Gtk.Template.Child()
     search_button = Gtk.Template.Child()
-    search_window = Gtk.Template.Child()
     search_entry = Gtk.Template.Child()
     result_list = Gtk.Template.Child()
     toast_overlay = Gtk.Template.Child()
 
-    sso_info_button = Gtk.Template.Child()
-    sso_info_window = Gtk.Template.Child()
-
     scan_qr_button = Gtk.Template.Child()
-    scan_qr_window = Gtk.Template.Child()
+    scan_qr_page = Gtk.Template.Child()
     qr_scanner = Gtk.Template.Child()
-    qr_toast_overlay = Gtk.Template.Child()
+
+    login_pages = Gtk.Template.Child()
+    main_login_page = Gtk.Template.Child()
+    first_login_page = Gtk.Template.Child()
 
     def __init__(self, window, **kwargs):
         super().__init__(**kwargs)
@@ -60,34 +60,34 @@ class LoginWindow(Adw.Dialog):
         self.profile = "1"
 
         self.login_button.connect("activated", self.login)
-        self.search_button.connect("activated", self.openSearchSchoolWindow)
         self.search_entry.connect("changed", self.searchSchool)
+        self.use_credentials_button.connect("activated", self.openMainPage)
+        self.search_button.connect("clicked", self.openSearchSchoolPage)
 
         self.login_button.add_css_class("suggested-action")
 
-        closeOnClickOutside(self)
-        closeOnClickOutside(self.search_window)
-        closeOnClickOutside(self.sso_info_window)
-        closeOnClickOutside(self.scan_qr_window)
-
-        self.sso_info_button.connect("activated", self.openSSOInfoWindow)
-        self.scan_qr_button.connect("clicked", self.scanQRCode)
+        self.scan_qr_button.connect("activated", self.scanQRCode)
         self.method.connect("notify::selected-item", self.on_method_changed)
         self.on_method_changed()
 
         self.invalid_qr_toast = Adw.Toast()
         self.invalid_qr_toast.set_title(_("Invalid QR-Code"))
+        self.invalid_qr_toast.set_timeout(2)
 
-    def openSSOInfoWindow(self, a=None):
-        self.sso_info_window.present(self)
+        self.login_pages.replace([self.first_login_page])
+
+    def openMainPage(self, *args):
+        self.login_pages.push(self.main_login_page)
+        if self.school_entry.get_text() == "":
+            self.openSearchSchoolPage()
 
     def scanQRCode(self, a=None):
-        self.scan_qr_window.present(self)
+        self.login_pages.push(self.scan_qr_page)
         self.qr_scanner.enable(self.fillDataFromUri)
 
-    def openSearchSchoolWindow(self, data=None):
+    def openSearchSchoolPage(self, *args):
         self.searchSchool()
-        self.search_window.present(self)
+        self.login_pages.push(self.search_page)
 
     def on_method_changed(self, a=None, b=None):
         self.pswd_entry.set_title(self.method.get_selected_item().get_string())
@@ -127,7 +127,7 @@ class LoginWindow(Adw.Dialog):
 
             def onClick(click, name=name, server=server):
                 if server != "":
-                    self.search_window.close()
+                    self.login_pages.pop()
                     self.school_entry.set_text(name)
                     self.server_entry.set_text(server)
 
@@ -177,7 +177,6 @@ class LoginWindow(Adw.Dialog):
         login = "untis://setschool?"
 
         if uri.startswith(login):
-            self.scan_qr_window.close()
             uri = uri[len(login):]
             data = {}
             parts = uri.split("&")
@@ -193,10 +192,13 @@ class LoginWindow(Adw.Dialog):
                         self.pswd_entry.set_text(value)
                     case "user":
                         self.usr_entry.set_text(value)
+                self.login_pages.push(self.main_login_page)
+                self.login()
         else:
-            self.qr_toast_overlay.add_toast(self.invalid_qr_toast)
+            self.toast_overlay.add_toast(self.invalid_qr_toast)
 
     def requestLogin(self, profile):
+        self.login_pages.replace([self.first_login_page])
         self.present(self.window)
         self.profile = profile
         print("login", profile)
@@ -206,6 +208,7 @@ class LoginWindow(Adw.Dialog):
         self.pswd_entry.set_text(credentials["password"])
         self.school_entry.set_text(credentials["school"])
         self.server_entry.set_text(credentials["server"])
+        position = 1
         match credentials["type"]:
             case "token":
                 position = 0
@@ -216,3 +219,6 @@ class LoginWindow(Adw.Dialog):
         self.window.shared.profiles = getProfiles()
         profile = self.window.shared.profiles["profiles"][profile]["name"]
         self.profile_entry.set_text(profile)
+
+        if self.school_entry.get_text() != "":
+            self.openMainPage()

@@ -23,6 +23,7 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
+from gi.repository import Pango
 from .homework_api import fetchHomeworks
 from .information import InformationWindow
 from .lesson import Lesson
@@ -30,6 +31,7 @@ from .holiday import Holiday
 from .offline_banner import OfflineBanner
 from .dialog import closeOnClickOutside
 from .api import getDateTime, id as appId
+from .custom_timetables import buildCustomTimetable
 import cairo
 import datetime
 import math
@@ -92,7 +94,6 @@ class Timetable(Gtk.Box):
     timetable = Gtk.Template.Child()
     next_button = Gtk.Template.Child()
     previous_button = Gtk.Template.Child()
-    show_sidebar_button = Gtk.Template.Child()
 
     progress = Gtk.Template.Child()
 
@@ -100,8 +101,10 @@ class Timetable(Gtk.Box):
     date_chooser = Gtk.Template.Child()
     date_chooser_dialog = Gtk.Template.Child()
 
-    def __init__(self, resourceType = None, resourceId = None, **kwargs):
+    def __init__(self, resourceType = None, resourceId = None, id = "timetable", **kwargs):
         super().__init__(**kwargs)
+
+        self.id = id
 
         self.columns = []
         self.lessons = []
@@ -163,12 +166,13 @@ class Timetable(Gtk.Box):
         self.date_chooser_dialog.close()
         self.jump_to(date)
 
-    def jump_to(self, date):
+    def jump_to(self, date, display = True):
         self.startdate = date - datetime.timedelta(days=date.weekday())
         self.enddate = self.startdate + datetime.timedelta(days=4)
         while self.enddate < date:
-            self.next()
-        self.loadData()
+            self.next(display = False)
+        if display:
+            self.loadData()
 
     def update_marker(self):
         for overlay in self.overlays:
@@ -176,36 +180,25 @@ class Timetable(Gtk.Box):
         return True
 
     def enable_bindings(self, parent):
-        parent.split_view.bind_property(
-            "show-sidebar",
-            self.show_sidebar_button,
-            "active",
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
-        )
-        parent.sidebar_breakpoint.add_setter(self.show_sidebar_button, "visible", True)
-
-        self.initTimetable(parent)
-
-    def initTimetable(self, parent):
         self.shared = parent.shared
-
         self.window = parent
-        try:
-            self.jump_to(getDateTime())
-        except:
-            raise
+        self.jump_to(getDateTime(), display = False)
 
-    def next(self, data=None):
+    def shouldHide(self):
+        return False
+
+    def next(self, data=None, display = True):
         self.startdate += datetime.timedelta(days=7)
         self.enddate += datetime.timedelta(days=7)
-        self.loadData()
+        if display:
+            self.loadData()
 
     def previous(self, data=None):
         self.startdate -= datetime.timedelta(days=7)
         self.enddate -= datetime.timedelta(days=7)
         self.loadData()
 
-    def refresh(self):
+    def refresh(self, reason):
         self.loadData()
 
     def refreshHomeworks(self):
@@ -215,10 +208,10 @@ class Timetable(Gtk.Box):
         self.displayHomeworks(homeworks)
 
     def getTimetable(self, start, end, mode="normal"):
-        if self.resourceType:
-            return self.shared.session.getTimetable(self.resourceType, self.resourceId, start, end, mode=mode)
+        if self.resourceType == "CUSTOM":
+            return buildCustomTimetable(self.resourceId, start, end, mode=mode)
         else:
-            return self.shared.session.getOwnTimetable(start, end, mode=mode)
+            return self.shared.session.getTimetable(self.resourceType, self.resourceId, start, end, mode=mode)
 
     def prefetch(self):
         def code():
@@ -389,6 +382,7 @@ class Timetable(Gtk.Box):
                 drawLabel(end)
 
     def displayData(self, data):
+        dontClose = False
         if data is None:
             return
         table, self.gridFormat = data
@@ -474,6 +468,7 @@ class Timetable(Gtk.Box):
             dateLabel = Gtk.Label()
             # Translators: date format in the timetable
             dateLabel.set_label(date.strftime(_("%m/%d/%y")))
+            dateLabel.set_ellipsize(Pango.EllipsizeMode.END)
             dayBox.append(dateLabel)
             dateLabel.add_css_class("day")
             if date.date() == now.date():
@@ -503,8 +498,21 @@ class Timetable(Gtk.Box):
                 layout = DayLayout(self.start, self.end)
                 dayBox.append(layout)
                 for lesson in day:
+                    if lesson["end"] > self.end:
+                        self.end = lesson["end"]
+                        for column in self.columns:
+                            column.set_size_request(-1, self.end-self.start)
+                    if lesson["start"] < self.start:
+                        self.start = lesson["start"]
+                        for column in self.columns:
+                            column.set_size_request(-1, self.end-self.start)
                     block = Lesson(lesson, self, now)
                     layout.add(block)
                     self.lessons.append((layout, block, lesson))
+                    if lesson == self.information_window.lesson:
+                        dontClose = True
 
             date += datetime.timedelta(days=1)
+
+        if not dontClose and self.information_window.lesson is not None:
+            self.information_window.close()
