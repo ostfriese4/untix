@@ -927,6 +927,11 @@ class session:
         data = self._getRequest(path, maxage = maxage)
         return data["data"]["profile"]
 
+    def getCredentials(self):
+        path = "/WebUntis/api/profile/access"
+        data = self._getRequest(path, maxage = maxage)
+        return data["data"]["profile"]
+
     def setProfile(self, settings):
         path = "/WebUntis/api/profile/general"
         return self._post(path, settings, headers = self.getCsrfToken()).text
