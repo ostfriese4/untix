@@ -46,6 +46,7 @@ untix_sources = [
   'preferences.py',
   'profiles.py',
   'qr.py',
+  'shared.py',
   'teachers.py',
   'timetable.py',
   'window.py',

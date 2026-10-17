@@ -4,6 +4,7 @@
   <template class="PreferencesDialog" parent="AdwPreferencesDialog">
     <property name="content-width">560</property>
     <property name="content-height">420</property>
+    <property name="search-enabled">true</property>
     <child>
       <object class="AdwPreferencesPage">
         <child>
@@ -39,6 +40,9 @@
           </object>
         </child>
       </object>
+    </child>
+    <child>
+      <object class="AccountSettingsPage" id="account"/>
     </child>
   </template>
 </interface>

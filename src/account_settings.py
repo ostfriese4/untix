@@ -19,21 +19,19 @@
 
 from gi.repository import Gtk
 from gi.repository import Adw
-from .dialog import closeOnClickOutside
+from .shared import shared
 
 
 @Gtk.Template(resource_path="/page/codeberg/ostfriese4/Untis/account_settings.ui")
-class AccountSettingsWindow(Adw.Dialog):
-    __gtype_name__ = "AccountSettingsWindow"
+class AccountSettingsPage(Adw.PreferencesPage):
+    __gtype_name__ = "AccountSettingsPage"
 
     email = Gtk.Template.Child()
     mail_message = Gtk.Template.Child()
     mail_notification = Gtk.Template.Child()
 
-    def __init__(self, window, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.window = window
-        closeOnClickOutside(self)
         self.editable = False
 
         self.email.connect("apply", lambda data:self.apply("email"))
@@ -49,12 +47,12 @@ class AccountSettingsWindow(Adw.Dialog):
                     value = self.mail_message.get_active()
                 case "systemMailForwarding":
                     value = self.mail_notification.get_active()
-            print(self.window.shared.session.setProfileKey(key, value))
+            print(shared.session.setProfileKey(key, value))
             print("apply",key,value)
 
     def load(self):
         self.editable = False
-        data = self.window.shared.session.getProfile()
+        data = shared.session.getProfile()
         if "email" in data:
             self.email.set_text(data["email"])
         if "forwardMessageToEmail" in data:
@@ -62,8 +60,4 @@ class AccountSettingsWindow(Adw.Dialog):
         if "systemMailForwarding" in data:
             self.mail_notification.set_active(data["systemMailForwarding"])
         self.editable = True
-
-    def open(self, data=None):
-        self.present(self.window)
-        self.load()
 

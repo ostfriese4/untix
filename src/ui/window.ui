@@ -35,21 +35,6 @@
                 <property name="content">
                   <object class="AdwViewSwitcherSidebar" id="sidebar">
                     <property name="stack">main_view_stack</property>
-                    <property name="suffix">
-                      <object class="GtkButton" id="user_settings_button">
-                        <property name="hexpand">true</property>
-                        <child>
-                          <object class="AdwButtonContent">
-                            <property name="icon-name">preferences-system-symbolic</property>
-                            <property name="label" translatable="yes">Account</property>
-                            <property name="halign">start</property>
-                          </object>
-                        </child>
-                        <style>
-                          <class name="flat"/>
-                        </style>
-                      </object>
-                    </property>
                   </object>
                 </property>
               </object>

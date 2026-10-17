@@ -22,7 +22,6 @@ from .create_homework import HomeworkEditWindow
 from .credentials import getCredentials
 from .api import testCredentials, id as appId
 from .profiles import ProfilesWindow
-from .account_settings import AccountSettingsWindow
 from gi.repository import Adw
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -37,7 +36,6 @@ class UntisWindow(Adw.ApplicationWindow):
     main_view_stack = Gtk.Template.Child()
     sidebar_breakpoint = Gtk.Template.Child()
     split_view = Gtk.Template.Child()
-    user_settings_button = Gtk.Template.Child()
     sidebar = Gtk.Template.Child()
 
     def __init__(self, shared, **kwargs):
@@ -53,9 +51,6 @@ class UntisWindow(Adw.ApplicationWindow):
         self.login_window = LoginWindow(self)
         self.homeworkEditWindow = HomeworkEditWindow(self)
         self.profiles_window = ProfilesWindow(self)
-        self.account_settings_window = AccountSettingsWindow(self)
-
-        self.user_settings_button.connect("clicked", self.account_settings_window.open)
 
         # runs after the handlers of the pages, so their data is loaded
         self.main_view_stack.connect("notify::visible-child-name", self.refreshPage)
