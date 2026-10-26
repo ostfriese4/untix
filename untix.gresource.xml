@@ -13,6 +13,7 @@
     <file preprocess="xml-stripblanks">lesson.ui</file>
     <file preprocess="xml-stripblanks">login.ui</file>
     <file preprocess="xml-stripblanks">messages.ui</file>
+    <file preprocess="xml-stripblanks">notification_settings.ui</file>
     <file preprocess="xml-stripblanks">offline_banner.ui</file>
     <file preprocess="xml-stripblanks">preferences.ui</file>
     <file preprocess="xml-stripblanks">profiles.ui</file>
@@ -25,6 +26,7 @@
   <gresource prefix="/page/codeberg/ostfriese4/Untis/icons/scalable/actions/">
     <file preprocess="xml-stripblanks">agenda-symbolic.svg</file>
     <file preprocess="xml-stripblanks">appointment-soon-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">bell-symbolic.svg</file>
     <file preprocess="xml-stripblanks">check-round-outline2-symbolic.svg</file>
     <file preprocess="xml-stripblanks">document-edit-symbolic.svg</file>
     <file preprocess="xml-stripblanks">external-link-symbolic.svg</file>
@@ -36,6 +38,7 @@
     <file preprocess="xml-stripblanks">non-starred-symbolic.svg</file>
     <file preprocess="xml-stripblanks">paper-symbolic.svg</file>
     <file preprocess="xml-stripblanks">qr-code-scanner-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">sliders-symbolic.svg</file>
     <file preprocess="xml-stripblanks">starred-symbolic.svg</file>
     <file preprocess="xml-stripblanks">system-users-symbolic.svg</file>
     <file preprocess="xml-stripblanks">xsi-mail-attachment-symbolic.svg</file>

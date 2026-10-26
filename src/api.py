@@ -125,6 +125,21 @@ def searchSchool(query):
     except requests.exceptions.ConnectionError:
         return ["offline"]
 
+def parseLandingPage(server, path = "/WebUntis", key = "config: ", session = requests):
+    landingPage = session.get(server + path).text
+    pos = landingPage.find(key) + len(key)
+    end = pos
+    score = 0
+    while score != 0 or end == pos:
+        i = landingPage[end]
+        if i == "{":
+            score += 1
+        elif i == "}":
+            score -= 1
+        end += 1
+    code = landingPage[pos:end]
+    return json.loads(code)
+
 
 def testCredentials(credentials):
     return _login(credentials) is not None or offline
@@ -152,6 +167,13 @@ class session:
                 self.colors = json.load(file)
         except:
             self.colors = {}
+
+    def getCsrfToken(self):
+        data = parseLandingPage(self.server, path = "/WebUntis/embedded.do", key = "grupet: ", session = self.session)
+        headers = {
+            data["csrfHeader"]: data["csrfToken"]
+        }
+        return headers
 
     def ensureLogin(self):
         if self.session is None:
@@ -252,6 +274,9 @@ class session:
                 return self.cacheIndex[object] + maxage >= time.time()
         return False
 
+    def _post(self, path, data, headers = {}):
+        return self.session.post(self.server + path, json = data, headers = headers)
+
     def _RPCRequest(self, method, params, mode="normal", maxage=3600):
         global offline, lastOnline
         orig = mode
@@ -278,7 +303,7 @@ class session:
 
         if mode == "online":
             try:
-                response = self.session.post(self.server + "/WebUntis/jsonrpc.do", json = payload)
+                response = self._post("/WebUntis/jsonrpc.do", payload)
                 data = response.json()
                 offline = False
                 lastOnline = getDateTime()
@@ -896,6 +921,25 @@ class session:
         path = "/WebUntis/api/rest/view/v1/app/platform-application/menus"
         data = self._getRequest(path)
         return data or []
+
+    def getProfile(self, maxage = 1):
+        path = "/WebUntis/api/profile/general"
+        data = self._getRequest(path, maxage = maxage)
+        return data["data"]["profile"]
+
+    def getCredentials(self):
+        path = "/WebUntis/api/profile/access"
+        data = self._getRequest(path, maxage = maxage)
+        return data["data"]["profile"]
+
+    def setProfile(self, settings):
+        path = "/WebUntis/api/profile/general"
+        return self._post(path, settings, headers = self.getCsrfToken()).text
+
+    def setProfileKey(self, key, value):
+        profile = self.getProfile()
+        profile[key] = value
+        return self.setProfile(profile)
 
     def getOwnUser(self):
         return self.getGeneralData()["user"]

@@ -17,6 +17,15 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from .shared import setImportableShared
+
+class shared:
+    pass
+shared = shared()
+shared.shared = type(shared)
+setImportableShared(shared)
+
+
 import sys
 import gi
 
@@ -46,10 +55,6 @@ for path in paths:
 developers = ["Ostfriese4", "Felitendo"]
 
 
-class shared:
-    pass
-
-
 class UntisApplication(Adw.Application):
     def __init__(self):
         super().__init__(
@@ -67,8 +72,7 @@ class UntisApplication(Adw.Application):
             "create_homework", self.on_create_homework_action, ["<control>n"]
         )
 
-        self.shared = shared()
-        self.shared.shared = shared
+        self.shared = shared
         self.shared.profiles = getProfiles()
         self.shared.checked = False
         self.loginIfPossible = False

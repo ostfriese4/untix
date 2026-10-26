@@ -22,6 +22,7 @@ from gi.repository import Adw
 from gi.repository import Gio
 from .api import id
 from .dialog import closeOnClickOutside
+from .notification_settings import NotificationSettingsPage
 
 
 @Gtk.Template(resource_path="/page/codeberg/ostfriese4/Untis/preferences.ui")
@@ -32,6 +33,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
     show_time_axis = Gtk.Template.Child()
     ignore_exam_breaks = Gtk.Template.Child()
     hide_unsupported_features = Gtk.Template.Child()
+    notifications = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -63,3 +65,10 @@ class PreferencesDialog(Adw.PreferencesDialog):
             "active",
             Gio.SettingsBindFlags.DEFAULT,
         )
+
+        def onPageChanged(*args):
+            page = self.get_visible_page()
+            if page == self.notifications:
+                self.notifications.load()
+        onPageChanged()
+        self.connect("notify::visible-page", onPageChanged)

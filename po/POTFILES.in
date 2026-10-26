@@ -19,6 +19,7 @@ src/lesson.py
 src/login.py
 src/main.py
 src/messages.py
+src/notification_settings.py
 src/offline_banner.py
 src/preferences.py
 src/profiles.py
@@ -32,6 +33,7 @@ src/ui/homework_row.ui
 src/ui/information.ui
 src/ui/lesson.ui
 src/ui/login.ui
+src/ui/notification_settings.ui
 src/ui/offline_banner.ui
 src/ui/preferences.ui
 src/ui/profiles.ui

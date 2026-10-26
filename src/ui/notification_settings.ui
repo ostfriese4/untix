@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="NotificationSettingsPage" parent="AdwPreferencesPage">
+    <property name="title" translatable="yes">Notifications</property>
+    <property name="icon-name">bell-symbolic</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">E-Mail</property>
+        <child>
+          <object class="AdwEntryRow" id="email">
+            <property name="title" translatable="yes">E-Mail</property>
+            <property name="show-apply-button">true</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="mail_message">
+            <property name="title" translatable="yes">Get messages as E-Mail</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="mail_notification">
+            <property name="title" translatable="yes">Get notifications as E-Mail</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
