@@ -32,6 +32,7 @@ import os
 class ExternalPage(Gtk.Box):
     __gtype_name__ = 'ExternalPage'
 
+    offline = Gtk.Template.Child()
     open_button = Gtk.Template.Child()
     back_button = Gtk.Template.Child()
     next_button = Gtk.Template.Child()

@@ -39,6 +39,9 @@
             </child>
           </object>
         </child>
+        <child type="top">
+          <object class="OfflineBanner" id="offline"/>
+        </child>
         <property name="content">
           <object class="GtkOverlay" id="overlay">
             <child>
