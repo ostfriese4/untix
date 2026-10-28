@@ -21,9 +21,11 @@ from gi.repository import Gtk
 from gi.repository import Adw
 from gi.repository import GLib
 from gi.repository import GObject
-from .homework_api import getAll
+from .homework_api import getAllHomeworks
+from .create_homework import getEditWindow
 from .offline_banner import OfflineBanner
 from .homework_row import HomeworkRow
+from .shared import shared
 import datetime
 
 
@@ -41,6 +43,9 @@ class HomeworkList(Gtk.Box):
         super().__init__(**kwargs)
         self.days = {}
         self.scrollTo = None
+        shared.app.create_action(
+            "create_homework", lambda *args: getEditWindow().new_homework(), ["<control>n"]
+        )
 
     def enable_bindings(self, parent):
         self.shared = parent.shared
@@ -70,7 +75,7 @@ class HomeworkList(Gtk.Box):
     def displayAll(self):
         unfinished = 0
         self.scrollTo = None
-        data = getAll()
+        data = getAllHomeworks()
         for item in data:
             if item["completed"] == False:
                 unfinished += 1
@@ -124,11 +129,14 @@ class HomeworkList(Gtk.Box):
             row = HomeworkRow(homework)
             day.add(row)
 
+page = HomeworkList()
+shared.homeworkUpdatedActions.append(lambda: page.refresh("edit"))
+
 moduleInfo = {
     "staticPages": [
         {
             "group": _("Modules"),
-            "widget": HomeworkList(),
+            "widget": page,
             "name": "homework",
             "title": _("Homework"),
             "icon": "agenda-symbolic",

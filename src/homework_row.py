@@ -19,7 +19,10 @@
 
 from gi.repository import Gtk
 from gi.repository import Adw
+from gi.repository import GLib
 from .homework_api import getById, setValue, getChanges
+from .create_homework import getEditWindow
+from .shared import shared
 import datetime
 
 
@@ -85,11 +88,12 @@ class HomeworkRow(Gtk.ListBoxRow):
         state = self.check_button.get_active()
         if state != self.homework["completed"]:
             setValue(self.homework["id"], "completed", state)
-            self.get_ancestor(Adw.ApplicationWindow).homeworksChanged()
+            for action in shared.homeworkUpdatedActions:
+                GLib.idle_add(action)
         self.update()
 
     def edit(self, data=None):
-        self.get_ancestor(Adw.ApplicationWindow).homeworkEditWindow.edit(
+        getEditWindow().edit(
             self.homework["id"], row=self
         )
 

@@ -969,7 +969,7 @@ class session:
             })
         return out
 
-    def getHomeworks(self, start=None, end=None):
+    def getOwnHomeworks(self, start=None, end=None, mode = "normal"):
         year = self.getCurrentSchoolYear()
         if start is None:
             start = datetime.datetime.strptime(year["dateRange"]["start"], "%Y-%m-%d")
@@ -982,11 +982,21 @@ class session:
             + "&endDate="
             + end.strftime("%Y%m%d")
         )
-        data = self._getRequest(path)
+        data = self._getRequest(path, mode = mode)
         if data is None or not "data" in data:  # e.g. no right for homeworks
             print("ERROR: homeworks:", data)
-            return {"lessons": [], "homeworks": []}
-        return data["data"]
+            data = {"lessons": [], "homeworks": []}
+        else:
+            data = data["data"]
+
+        lessons = data["lessons"]
+        for homework in (homeworks := data["homeworks"]):
+            for lesson in lessons:
+                if lesson["id"] == homework["lessonId"]:
+                    homework["subject"] = lesson["subject"]
+                    homework["lesson"] = lesson
+
+        return homeworks
 
     def getTimeGrid(self, id=None, mode = "normal"):
         path = "/WebUntis/api/rest/view/v1/timetable/grid?timetableType=MY_TIMETABLE"

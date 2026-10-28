@@ -24,7 +24,6 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Pango
-from .homework_api import fetchHomeworks
 from .information import InformationWindow
 from .lesson import Lesson
 from .holiday import Holiday
@@ -203,9 +202,7 @@ class Timetable(Gtk.Box):
 
     def refreshHomeworks(self):
         for lesson in self.lessons:
-            lesson[1].clearHomeworks()
-        homeworks = fetchHomeworks(self.startdate, self.enddate)
-        self.displayHomeworks(homeworks)
+            lesson[1].loadHomeworks()
 
     def getTimetable(self, start, end, mode="normal"):
         if self.resourceType == "CUSTOM":
@@ -275,11 +272,9 @@ class Timetable(Gtk.Box):
                     grid = self.shared.session.getTimeGrid(grid)
                     if s == self.startdate:
                         GLib.idle_add(self.displayData, (table, grid))
-                        homeworks = fetchHomeworks(self.startdate, self.enddate)
-                        if s == self.startdate:
-                            GLib.idle_add(self.displayHomeworks, homeworks)
-                            self.loading = False
-                            self.prefetch()
+                        self.loading = False
+                        self.prefetch()
+
             except:
                 self.loading = False
                 raise
@@ -288,27 +283,6 @@ class Timetable(Gtk.Box):
         thread = threading.Thread(target=load, daemon=True)
         thread.start()
         return True  # To repeat
-
-    def displayHomeworks(self, data):
-        for homework in data:
-            lessons = []
-            for lesson in self.lessons:
-                ld = lesson[2]
-                dueDate = datetime.datetime.strptime(ld["startDateTime"], "%Y-%m-%dT%H:%M:%S").strftime("%Y%m%d")
-                if ld["subject"]["shortName"] == homework["subject"]:
-                    if str(homework["dueDate"]) == dueDate:
-                        lesson[1].addHomework(homework)
-                        break
-                if "original" in ld:
-                    if "subject" in ld["original"]:
-                        if (
-                            ld["original"]["subject"]["shortName"]
-                            == homework["subject"]
-                        ):
-                            if str(homework["dueDate"]) == dueDate:
-                                lessons.append(lesson[1])
-            for lesson in lessons:
-                lesson.addHomework(homework)
 
     def drawTimeMarker(self, area, context, width, height, dateLabel, week):
         now = getDateTime()
@@ -511,6 +485,7 @@ class Timetable(Gtk.Box):
                     self.lessons.append((layout, block, lesson))
                     if lesson == self.information_window.lesson:
                         dontClose = True
+                    GLib.idle_add(block.loadHomeworks)
 
             date += datetime.timedelta(days=1)
 

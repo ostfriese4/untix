@@ -19,8 +19,10 @@
 
 from gi.repository import Gtk
 from gi.repository import Adw
+from gi.repository import GLib
 from .homework_api import getNewId, setValue, getById, delete
 from .dialog import closeOnClickOutside
+from .shared import shared
 
 
 @Gtk.Template(resource_path="/page/codeberg/ostfriese4/Untis/create_homework.ui")
@@ -88,7 +90,8 @@ class HomeworkEditWindow(Adw.Dialog):
         self.close()
         if self.row is not None:
             self.row.update()
-        self.window.homeworksChanged()
+        for action in shared.homeworkUpdatedActions:
+            GLib.idle_add(action)
 
     def delete(self, data=None):
         warning = Adw.AlertDialog()
@@ -115,4 +118,13 @@ class HomeworkEditWindow(Adw.Dialog):
                 self.row.delete()
             else:
                 self.row.update()
-        self.window.homeworksChanged()
+        for action in shared.homeworkUpdatedActions:
+            GLib.idle_add(action)
+
+dialog = None
+def getEditWindow():
+    global dialog
+    if dialog is None:
+        window = shared.app.props.active_window
+        dialog = HomeworkEditWindow(window)
+    return dialog

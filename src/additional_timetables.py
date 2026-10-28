@@ -25,6 +25,7 @@ from .timetable import Timetable
 from .custom_timetables import listCustomTimetables, getCustomTimetable, createCustomTimetable, setCustomTimetable, deleteCustomTimetable
 from .dialog import closeOnClickOutside
 from .custom_timetable_builder import CustomTimetableBuilder, confirm
+from .shared import shared
 import os
 import json
 
@@ -252,6 +253,7 @@ def addStarredTimetables(window):
                     needed.remove(page["data"])
                 else:
                     window.dynamicPages.remove(page)
+                    shared.homeworkUpdatedActions.remove(page["widget"].refreshHomeworks)
 
     for pageData in needed:
         id = "starred-timetable" + pageData["name"] + pageData["type"] + str(pageData["id"])
@@ -263,6 +265,7 @@ def addStarredTimetables(window):
         )
         widget.enable_bindings(window)
 
+        shared.homeworkUpdatedActions.append(widget.refreshHomeworks)
         window.dynamicPages.append({
             "group": groupName,
             "data": pageData,

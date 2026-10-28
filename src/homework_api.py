@@ -6,6 +6,7 @@ from .shared import shared
 DATAPATH = os.environ.get("XDG_DATA_HOME", ".untis")
 
 profile = None
+shared.homeworkUpdatedActions = []
 
 
 def loadOwnData(profile):
@@ -29,64 +30,59 @@ def writeOwnData(data):
     with open(DATAPATH + profile + ".json", "w") as file:
         json.dump(data, file, indent=4)
 
-
-def fetchHomeworks(start=None, end=None, mode="normal", orig=False):
-    data = shared.session.getHomeworks(start, end)
-    lessons = data["lessons"]
-    homeworks = data["homeworks"]
-
-    result = []
-
-    for homework in homeworks:
-        day = str(homework["dueDate"])
-        for lesson in lessons:
-            if lesson["id"] == homework["lessonId"]:
-                homework["subject"] = lesson["subject"]
-        if orig:
-            result.append(homework)
-        else:
-            result.append(applyChanges(homework))
-
+def getLocalHomeworks(start=None, end=None):
     if start is not None:
         start = int(start.strftime("%Y%m%d"))
     if end is not None:
         end = int(end.strftime("%Y%m%d"))
 
-    ownData = getOwnData()
-    for id in ownData:
+    result = []
+    for id in (ownData := getOwnData()):
         if id.startswith("own"):
             item = ownData[id]
 
             if start is not None and item["dueDate"] <= start:
-                break
+                continue
             if end is not None and item["dueDate"] >= end:
-                break
+                continue
 
             result.append(item)
 
     return result
 
+def getRemoteHomeworks(start=None, end=None, mode="normal", orig=False):
+    result = []
+    for homework in shared.session.getOwnHomeworks(start, end, mode = mode):
+        if orig:
+            result.append(homework)
+        else:
+            result.append(applyChanges(homework))
+    return result
+
+def mergeHomeworks(lists):
+    def key(item):
+        return item["dueDate"]
+    result = []
+    for homeworks in lists:
+        result += homeworks
+    result.sort(key = key)
+    return result
+
+def getAllHomeworks(start = None, end = None, mode = "normal", orig = False):
+    return mergeHomeworks([
+        getLocalHomeworks(start, end),
+        getRemoteHomeworks(start, end, mode, orig),
+    ])
 
 def applyChanges(item):
     ownData = getOwnData()
 
-    if type(item) != dict:
-        print(item)
-        return
-    id = str(item["id"])
-    if id in ownData:
-        changes = ownData[id]
+    if (id := str(item["id"])) in ownData:
         item["oldKeys"] = {}
-        for key in changes:
-            if not id.startswith("own"):
-                item["oldKeys"][key] = item[key]
+        for key in (changes := ownData[id]):
+            item["oldKeys"][key] = item[key]
             item[key] = changes[key]
     return item
-
-
-def getAll(orig=False):
-    return fetchHomeworks(orig=orig)
-
 
 def setValue(id, key, value):
     ownData = getOwnData()
@@ -100,7 +96,7 @@ def setValue(id, key, value):
 
 def getById(id, orig=False):
     id = str(id)
-    for item in getAll(orig):
+    for item in getAllHomeworks(orig = orig):
         if str(item["id"]) == id:
             return item
 

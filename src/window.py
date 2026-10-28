@@ -18,7 +18,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from .login import LoginWindow
-from .create_homework import HomeworkEditWindow
 from .credentials import getCredentials
 from .api import testCredentials, id as appId
 from .profiles import ProfilesWindow
@@ -49,7 +48,6 @@ class UntisWindow(Adw.ApplicationWindow):
         self.shared = shared
         self.shared.window = self
         self.login_window = LoginWindow(self)
-        self.homeworkEditWindow = HomeworkEditWindow(self)
         self.profiles_window = ProfilesWindow(self)
 
         # runs after the handlers of the pages, so their data is loaded
@@ -198,20 +196,6 @@ class UntisWindow(Adw.ApplicationWindow):
                 traceback.print_exc()
 
         self.rebuildSidebar()
-
-    def homeworksChanged(self):
-        # keep the homework page and the indicators in the timetable in
-        # sync when a homework is created, edited, checked off or deleted
-        homework = self.main_view_stack.get_child_by_name("homework")
-        if homework is not None:
-            homework.displayAll()
-        timetable = self.main_view_stack.get_child_by_name("timetable")
-        if timetable is not None:
-            timetable.refreshHomeworks()
-        additional = self.main_view_stack.get_child_by_name("additional_timetables")
-        if additional is not None:
-            if additional.currentTimetable is not None:
-                additional.currentTimetable.refreshHomeworks()
 
     def refreshPage(self, *args, reason = "open"):
         try:

@@ -22,6 +22,7 @@ from gi.repository import Gdk
 from gi.repository import Adw
 from gi.repository import Pango
 from .colors import serverColorClass
+from .homework_api import applyChanges, getLocalHomeworks
 import datetime
 
 
@@ -174,7 +175,7 @@ class Lesson(Gtk.Overlay):
                 self.room_label.add_css_class("changed")
 
         self.markedAsHidden = False
-        self.lesson["homeworks"] = []
+        self.lesson["originalHomeworks"] = self.lesson["homeworks"].copy()
 
     def markAsHidden(self):
         self.markedAsHidden = True
@@ -185,15 +186,15 @@ class Lesson(Gtk.Overlay):
         else:
             print("don't open", self.lesson)
 
-    def clearHomeworks(self):
-        self.lesson["homeworks"] = []
-        self.homework_indicator.set_visible(False)
+    def loadHomeworks(self):
+        self.lesson["homeworks"] = self.lesson["originalHomeworks"]
 
-    def addHomework(self, homework):
-        if "homeworks" in self.lesson:
-            homeworks = self.lesson["homeworks"]
-        else:
-            homeworks = []
-            self.lesson["homeworks"] = homeworks
-        homeworks.append(homework)
-        self.homework_indicator.set_visible(True)
+        for homework in self.lesson["homeworks"]:
+            applyChanges(homework)
+
+        for homework in getLocalHomeworks():
+            if homework["subject"] == self.lesson["subject"]["displayName"]:
+                if datetime.datetime.strptime(self.lesson["startDateTime"], "%Y-%m-%dT%H:%M:%S").strftime("%Y%m%d") == str(homework["dueDate"]):
+                    self.lesson["homeworks"].append(homework)
+
+        self.homework_indicator.set_visible(self.lesson["homeworks"] != [])
