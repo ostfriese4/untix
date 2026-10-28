@@ -33,8 +33,6 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 from .api import session, version, id, testCredentials, releaseNotes
-from .homework_api import setShared
-from .custom_timetables import setCustomTimetablesShared
 from gi.repository import Gtk, Gio, Adw
 from .window import UntisWindow
 from .preferences import PreferencesDialog
@@ -82,9 +80,6 @@ class UntisApplication(Adw.Application):
         self.shared.session = session(credentials)
         if not testCredentials(credentials):
             self.loginIfPossible = True
-
-        setShared(self.shared)
-        setCustomTimetablesShared(self.shared)
 
         self.set_flags(Gio.ApplicationFlags.HANDLES_OPEN)
 

@@ -1,16 +1,11 @@
 import json
 import datetime
 import os
+from .shared import shared
 
 DATAPATH = os.environ.get("XDG_DATA_HOME", ".untis")
 
-shared = None
 profile = None
-
-
-def setShared(new):
-    global shared
-    shared = new
 
 
 def loadOwnData(profile):

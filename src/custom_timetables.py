@@ -20,11 +20,7 @@
 import json
 import os
 import datetime
-
-shared = None
-def setCustomTimetablesShared(new):
-    global shared
-    shared = new
+from .shared import shared
 
 def listCustomTimetables():
     try:
