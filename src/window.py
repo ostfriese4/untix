@@ -131,7 +131,7 @@ class UntisWindow(Adw.ApplicationWindow):
         allPages = self.pages + self.dynamicPages
         if self.settings.get_boolean("hide-unsupported-features"):
             for page in allPages.copy():
-                if page["widget"] in self.hiddenPages:
+                if page in self.hiddenPages:
                     allPages.remove(page)
 
         groups = {}
@@ -181,7 +181,7 @@ class UntisWindow(Adw.ApplicationWindow):
             try:
                 hide = page["widget"].shouldHide()
             except Exception:
-                hide = False
+                hide = True
                 traceback.print_exc()
             if hide:
                 self.hidePage(page)
