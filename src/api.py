@@ -375,15 +375,18 @@ class session:
         if mode == "online":
             try:
                 response = self.session.get(self.server + path)
-                data = response.json()
                 offline = False
                 lastOnline = getDateTime()
+                data = response.json()
                 if "errorCode" in data or "errorMessage" in data:
                     print("ERROR: PATH:", self.server + path, data)
-                    if "errorMessage" in data:
-                        if data["errorMessage"] == "Unauthorized":
-                            print("relogin")
-                            self.session = _login(self.credentials)
+                    if (
+                        ("errorMessage" in data and data["errorMessage"] == "Unauthorized")
+                        or ("loginError" in data)
+                    ):
+                        print("relogin")
+                        self.session = _login(self.credentials)
+                        return self._getRequest(path, mode, maxage, referer)
                     mode = "cache"
                 else:
                     self._writeToCache(hashed, data)
@@ -984,7 +987,6 @@ class session:
         )
         data = self._getRequest(path, mode = mode)
         if data is None or not "data" in data:  # e.g. no right for homeworks
-            print("ERROR: homeworks:", data)
             data = {"lessons": [], "homeworks": []}
         else:
             data = data["data"]
